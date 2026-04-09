@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Dawai Buddy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dawai_buddy_splash">Dawai Buddy</string>
+    <string name="instant_medicine_delivery_app_splash">Instant Medicine Delivery App</string>
+    <string name="welcome_to_dawai_buddy_login">Welcome to Dawai Buddy</string>
+    <string name="enter_your_mobile_number_to_login_or_register_login">Enter your mobile number to login or register</string>
+    <string name="phone_number_login">Phone Number</string>
+    <string name="get_otp_login">Get OTP</string>
+    <string name="verify_amp_proceed_opt"><![CDATA[Verify & Proceed]]></string>
+    <string name="enter_the_4_digit_code_sent_to_your_number_opt">Enter the 4-digit code sent to your number</string>
+    <string name="verify_otp_otp">Verify OTP</string>
 </resources>

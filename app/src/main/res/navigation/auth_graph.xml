@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth"
+    app:startDestination="@id/splash_fragment">
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.login_fragment"
+        android:label="fragment_login_fragment"
+        tools:layout="@layout/fragment_login_fragment" >
+        <action
+            android:id="@+id/action_login_fragment_to_otp_fragment"
+            app:destination="@id/otp_fragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+        app:popExitAnim="@anim/out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.splash_fragment"
+        android:label="fragment_splash_fragment"
+        tools:layout="@layout/fragment_splash_fragment" >
+        <action
+            android:id="@+id/action_splash_fragment_to_login_fragment"
+            app:destination="@id/login_fragment"
+            app:popUpTo="@id/splash_fragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/otp_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.otp_fragment"
+        android:label="fragment_otp_fragment"
+        tools:layout="@layout/fragment_otp_fragment" >
+        <action
+            android:id="@+id/action_otp_fragment_to_login_fragment"
+            app:destination="@id/login_fragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+    </fragment>
+</navigation>

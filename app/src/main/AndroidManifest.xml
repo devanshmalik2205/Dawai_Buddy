@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DawaiBuddy">
         <activity
-            android:name=".MainActivity"
+            android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

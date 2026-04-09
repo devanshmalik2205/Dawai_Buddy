@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dawai Buddy Core Palette (Night Theme Adjusted) -->
+    <color name="colorPrimary">#68BA7F</color> <!-- Lighter green for contrast -->
+    <color name="colorSecondary">#2E6F40</color>
+    <color name="colorOnPrimary">#253D2C</color> <!-- Dark text on light green buttons -->
+
+    <!-- Background & Text (Night Theme) -->
+    <color name="colorBackground">#121212</color>
+    <color name="colorTextPrimary">#CFFFDC</color> <!-- Soft mint for main text -->
+    <color name="colorTextSecondary">#AAAAAA</color>
+
+    <!-- Splash Screen Specific -->
+    <color name="colorSplashBackground">#253D2C</color> <!-- Deep dark green -->
+    <color name="colorSplashText">#CFFFDC</color>
+    <color name="colorSplashSubtitle">#68BA7F</color>
+
+    <color name="bg1">#1E1E1E</color>
+</resources>
