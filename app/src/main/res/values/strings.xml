@@ -11,4 +11,15 @@
     <string name="verify_amp_proceed_opt"><![CDATA[Verify & Proceed]]></string>
     <string name="enter_the_4_digit_code_sent_to_your_number_opt">Enter the 4-digit code sent to your number</string>
     <string name="verify_otp_otp">Verify OTP</string>
+    <string name="tell_us_about_yourself_tuay">Tell Us About Yourself</string>
+    <string name="help_us_personalize_your_medicine_delivery_experience_tuay">Help us personalize your medicine delivery experience.</string>
+    <string name="age_tuay">Age</string>
+    <string name="m_tuay">M</string>
+    <string name="f_tuay">F</string>
+    <string name="other_tuay">Other</string>
+    <string name="weight_kg_tuay">Weight (kg)</string>
+    <string name="height_cm_tuay">Height (cm)</string>
+    <string name="any_existing_medical_conditions_tuay">Any existing medical conditions?</string>
+    <string name="medicines_you_currently_take_tuay">Medicines you currently take?</string>
+    <string name="save_amp_continue_tuay"><![CDATA[Save & Continue]]></string>
 </resources>

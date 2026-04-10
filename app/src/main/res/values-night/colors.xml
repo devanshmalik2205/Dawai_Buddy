@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#fff</color>
+    <color name="white">#f000</color>
     <!-- Dawai Buddy Core Palette (Night Theme Adjusted) -->
     <color name="colorPrimary">#68BA7F</color> <!-- Lighter green for contrast -->
     <color name="colorSecondary">#2E6F40</color>

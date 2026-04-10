@@ -16,7 +16,14 @@
             app:enterAnim="@anim/in"
             app:exitAnim="@anim/out"
             app:popEnterAnim="@anim/in"
-        app:popExitAnim="@anim/out" />
+            app:popExitAnim="@anim/out" />
+        <action
+            android:id="@+id/action_login_fragment_to_tuay_fragment"
+            app:destination="@id/tuay_fragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out" />
     </fragment>
 
     <fragment
@@ -45,5 +52,18 @@
             app:exitAnim="@anim/out"
             app:popEnterAnim="@anim/in"
             app:popExitAnim="@anim/out"/>
+        <action
+            android:id="@+id/action_otp_fragment_to_tuay_fragment"
+            app:destination="@id/tuay_fragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out" />
     </fragment>
+
+    <fragment
+        android:id="@+id/tuay_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.tuay_fragment"
+        android:label="fragment_tuay_fragment"
+        tools:layout="@layout/fragment_tuay_fragment"/>
 </navigation>
