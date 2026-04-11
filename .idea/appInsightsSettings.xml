@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.ebookfrenzy.dawaibuddy" />
+                  <option name="mobileSdkAppId" value="1:40183781243:android:113ae6a5c34afbfa304fde" />
+                  <option name="projectId" value="dawai-buddy" />
+                  <option name="projectNumber" value="40183781243" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

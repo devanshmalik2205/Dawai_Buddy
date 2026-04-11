@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DawaiBuddy">
         <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login_fragment"
-        android:name="com.ebookfrenzy.dawaibuddy.login_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.auth.login_fragment"
         android:label="fragment_login_fragment"
         tools:layout="@layout/fragment_login_fragment" >
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/splash_fragment"
-        android:name="com.ebookfrenzy.dawaibuddy.splash_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.auth.splash_fragment"
         android:label="fragment_splash_fragment"
         tools:layout="@layout/fragment_splash_fragment" >
         <action
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/otp_fragment"
-        android:name="com.ebookfrenzy.dawaibuddy.otp_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.auth.otp_fragment"
         android:label="fragment_otp_fragment"
         tools:layout="@layout/fragment_otp_fragment" >
         <action
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/tuay_fragment"
-        android:name="com.ebookfrenzy.dawaibuddy.tuay_fragment"
+        android:name="com.ebookfrenzy.dawaibuddy.auth.tuay_fragment"
         android:label="fragment_tuay_fragment"
         tools:layout="@layout/fragment_tuay_fragment"/>
 </navigation>

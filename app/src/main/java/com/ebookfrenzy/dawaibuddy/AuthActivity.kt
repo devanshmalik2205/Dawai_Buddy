@@ -1,5 +1,6 @@
 package com.ebookfrenzy.dawaibuddy
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,5 +16,15 @@ class AuthActivity : AppCompatActivity() {
 
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    fun navigateToHome() {
+        // Create an Intent to start HomeActivity
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+
+        // finish() destroys AuthActivity so the user can't press the back button
+        // to return to the login screens once they are logged in.
+        finish()
     }
 }

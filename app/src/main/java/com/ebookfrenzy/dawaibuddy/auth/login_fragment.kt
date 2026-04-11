@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -51,9 +51,9 @@ class login_fragment : Fragment() {
             if (phone.length == 10) {
                 // 3. Append country code (Assuming +91 for India)
                 val phoneNumberWithCode = "+91$phone"
-                
+
                 Toast.makeText(requireContext(), "Sending OTP...", Toast.LENGTH_SHORT).show()
-                
+
                 // 4. Trigger Firebase OTP instead of navigating immediately
                 sendVerificationCode(phoneNumberWithCode)
             } else {

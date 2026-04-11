@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorTextPrimary"
             android:inputType="number"
-            android:maxLength="4"
+            android:maxLength="6"
             android:gravity="center"
             android:letterSpacing="1.0"
             android:textSize="24sp"/>
