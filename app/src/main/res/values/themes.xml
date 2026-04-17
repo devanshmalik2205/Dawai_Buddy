@@ -1,9 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.DawaiBuddy" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    <style name="Theme.DawaiBuddy" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <!-- Secondary -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <!-- Background -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+
+        <!-- Navigation bar (bottom system bar) -->
+        <item name="android:navigationBarColor">@color/colorBackground</item>
+
     </style>
 
-    <style name="Theme.DawaiBuddy" parent="Base.Theme.DawaiBuddy" />
+    <style name="CustomActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/colorSplashBackground</item>
+    </style>
+
 </resources>

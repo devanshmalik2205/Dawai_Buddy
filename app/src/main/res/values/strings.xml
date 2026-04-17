@@ -22,4 +22,9 @@
     <string name="any_existing_medical_conditions_tuay">Any existing medical conditions?</string>
     <string name="medicines_you_currently_take_tuay">Medicines you currently take?</string>
     <string name="save_amp_continue_tuay"><![CDATA[Save & Continue]]></string>
+    <string name="deliver_to">DELIVER TO</string>
+    <string name="health">Health</string>
+    <string name="mood">Mood</string>
+    <string name="meditate">Meditate</string>
+    <string name="water">Water</string>
 </resources>
