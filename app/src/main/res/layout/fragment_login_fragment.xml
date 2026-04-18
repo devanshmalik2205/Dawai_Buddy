@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="@color/bg1">
+    android:background="@color/background_1">
 
     <!-- Added ImageView to display the animated GIF at the top -->
     <ImageView
@@ -56,8 +56,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:hintTextColor="@color/colorPrimary"
+            app:boxStrokeColor="@color/green_dark_light"
+            app:hintTextColor="@color/green_dark_light"
             android:hint="@string/phone_number_login">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -77,7 +77,7 @@
             android:text="@string/get_otp_login"
             android:textSize="18sp"
             android:layout_marginTop="24dp"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/green_dark_light"
             android:textColor="@color/colorOnPrimary"
             app:cornerRadius="8dp" />
 

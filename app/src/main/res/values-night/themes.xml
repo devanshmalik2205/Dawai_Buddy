@@ -4,7 +4,7 @@
     <style name="Theme.DawaiBuddy" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- Primary colors -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/green_dark_light</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
 
         <!-- Secondary -->
@@ -14,7 +14,7 @@
         <item name="android:colorBackground">@color/colorBackground</item>
 
         <!-- Status bar -->
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/green_dark_light</item>
 
         <!-- Navigation bar -->
         <item name="android:navigationBarColor">@color/colorBackground</item>

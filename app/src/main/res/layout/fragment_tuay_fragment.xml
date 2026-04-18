@@ -41,8 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:hintTextColor="@color/colorPrimary"
+                app:boxStrokeColor="@color/green_dark_light"
+                app:hintTextColor="@color/green_dark_light"
                 android:hint="Full Name">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -66,8 +66,8 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary"
+                    app:boxStrokeColor="@color/green_dark_light"
+                    app:hintTextColor="@color/green_dark_light"
                     android:hint="@string/age_tuay">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -92,21 +92,21 @@
                         android:id="@+id/rbMale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/colorPrimary"
+                        android:buttonTint="@color/green_dark_light"
                         android:textColor="@color/colorTextPrimary"
                         android:text="@string/m_tuay" />
                     <RadioButton
                         android:id="@+id/rbFemale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/colorPrimary"
+                        android:buttonTint="@color/green_dark_light"
                         android:textColor="@color/colorTextPrimary"
                         android:text="@string/f_tuay" />
                     <RadioButton
                         android:id="@+id/rbOther"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="@color/colorPrimary"
+                        android:buttonTint="@color/green_dark_light"
                         android:textColor="@color/colorTextPrimary"
                         android:text="@string/other_tuay" />
                 </RadioGroup>
@@ -126,8 +126,8 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary"
+                    app:boxStrokeColor="@color/green_dark_light"
+                    app:hintTextColor="@color/green_dark_light"
                     android:hint="@string/weight_kg_tuay">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -144,8 +144,8 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:hintTextColor="@color/colorPrimary"
+                    app:boxStrokeColor="@color/green_dark_light"
+                    app:hintTextColor="@color/green_dark_light"
                     android:hint="@string/height_cm_tuay">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -162,8 +162,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:hintTextColor="@color/colorPrimary"
+                app:boxStrokeColor="@color/green_dark_light"
+                app:hintTextColor="@color/green_dark_light"
                 android:hint="@string/any_existing_medical_conditions_tuay">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -180,8 +180,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:hintTextColor="@color/colorPrimary"
+                app:boxStrokeColor="@color/green_dark_light"
+                app:hintTextColor="@color/green_dark_light"
                 android:hint="@string/medicines_you_currently_take_tuay">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -206,7 +206,7 @@
                 android:layout_height="60dp"
                 android:text="@string/save_amp_continue_tuay"
                 android:textSize="18sp"
-                app:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/green_dark_light"
                 android:textColor="@color/colorOnPrimary"
                 app:cornerRadius="8dp" />
 

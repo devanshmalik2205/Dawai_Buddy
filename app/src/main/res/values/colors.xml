@@ -2,20 +2,18 @@
 <resources>
     <color name="white">#fff</color>
     <color name="black">#f000</color>
-    <!-- Dawai Buddy Core Palette -->
-    <color name="colorPrimary">#2E6F40</color>
+
+    <color name="green_dark_light">#2E6F40</color>
     <color name="colorSecondary">#68BA7F</color>
     <color name="colorOnPrimary">#FFFFFF</color>
 
-    <!-- Background & Text (Light Theme) -->
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorTextPrimary">#253D2C</color>
     <color name="colorTextSecondary">#666666</color>
 
-    <!-- Splash Screen Specific -->
     <color name="colorSplashBackground">#2E6F40</color>
     <color name="colorSplashText">#FFFFFF</color>
     <color name="colorSplashSubtitle">#CFFFDC</color>
 
-    <color name="bg1">#FFFBF1</color>
+    <color name="background_1">#FFFBF1</color>
 </resources>

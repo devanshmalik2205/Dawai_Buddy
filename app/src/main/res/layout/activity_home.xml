@@ -45,12 +45,30 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Home - Vigyan Vihar ▼"
+                android:maxWidth="150dp"
+                android:text=""
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/tvDeliverTo"
                 app:layout_constraintTop_toBottomOf="@id/tvDeliverTo" />
+
+            <TextView
+                android:id="@+id/tvLocationArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="▼"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/tvLocation"
+                app:layout_constraintStart_toEndOf="@id/tvLocation"
+                app:layout_constraintTop_toTopOf="@id/tvLocation" />
+
 
             <!-- Notification Bell -->
             <ImageView
@@ -324,8 +342,8 @@
                         app:cardCornerRadius="16dp"
                         app:cardElevation="0dp">
                         <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medicines" android:textColor="@color/colorPrimary" android:textStyle="bold" android:textSize="14sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Clinically Proved" android:textColor="@color/colorPrimary" android:textSize="10sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medicines" android:textColor="@color/green_dark_light" android:textStyle="bold" android:textSize="14sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Clinically Proved" android:textColor="@color/green_dark_light" android:textSize="10sp" />
                             <ImageView android:layout_width="40dp" android:layout_height="40dp" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" android:src="@drawable/medicines_card" android:scaleX="2" android:scaleY="2"/>
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
