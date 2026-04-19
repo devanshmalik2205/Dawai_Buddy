@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 
     namespace = "com.ebookfrenzy.dawaibuddy"

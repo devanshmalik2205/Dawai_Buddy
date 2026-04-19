@@ -4,16 +4,14 @@
     <color name="white">#f000</color>
 
     <color name="green_dark_light">#68BA7F</color>
-    <color name="colorSecondary">#2E6F40</color>
-    <color name="colorOnPrimary">#253D2C</color>
-
-    <color name="colorBackground">#121212</color>
-    <color name="colorTextPrimary">#CFFFDC</color>
-    <color name="colorTextSecondary">#AAAAAA</color>
-
-    <color name="colorSplashBackground">#253D2C</color>
-    <color name="colorSplashText">#CFFFDC</color>
-    <color name="colorSplashSubtitle">#68BA7F</color>
+    <color name="green_light_dark">#2E6F40</color>
+    <color name="white_dark_green">#253D2C</color>
+    <color name="green_vdark_vlight">#CFFFDC</color>
+    <color name="grey_dark_light">#AAAAAA</color>
+    <color name="green_light_vdark">#253D2C</color>
+    <color name="white_green_vlight">#CFFFDC</color>
+    <color name="green_vlight_light">#68BA7F</color>
 
     <color name="background_1">#1E1E1E</color>
+    <color name="background_2">#121212</color>
 </resources>

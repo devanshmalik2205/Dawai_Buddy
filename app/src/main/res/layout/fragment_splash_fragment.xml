@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorSplashBackground">
+    android:background="@color/green_light_vdark">
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dawai_buddy_splash"
-        android:textColor="@color/colorSplashText"
+        android:textColor="@color/white_green_vlight"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/instant_medicine_delivery_app_splash"
-        android:textColor="@color/colorSplashSubtitle"
+        android:textColor="@color/green_vlight_light"
         android:textSize="16sp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"

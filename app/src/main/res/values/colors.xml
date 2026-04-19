@@ -4,16 +4,16 @@
     <color name="black">#f000</color>
 
     <color name="green_dark_light">#2E6F40</color>
-    <color name="colorSecondary">#68BA7F</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="green_light_dark">#68BA7F</color>
+    <color name="white_dark_green">#FFFFFF</color>
 
-    <color name="colorBackground">#FFFFFF</color>
-    <color name="colorTextPrimary">#253D2C</color>
-    <color name="colorTextSecondary">#666666</color>
+    <color name="green_vdark_vlight">#253D2C</color>
+    <color name="grey_dark_light">#666666</color>
 
-    <color name="colorSplashBackground">#2E6F40</color>
-    <color name="colorSplashText">#FFFFFF</color>
-    <color name="colorSplashSubtitle">#CFFFDC</color>
+    <color name="green_light_vdark">#2E6F40</color>
+    <color name="white_green_vlight">#FFFFFF</color>
+    <color name="green_vlight_light">#CFFFDC</color>
 
     <color name="background_1">#FFFBF1</color>
+    <color name="background_2">#ffff</color>
 </resources>

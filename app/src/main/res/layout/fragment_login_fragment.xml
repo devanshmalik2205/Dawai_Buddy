@@ -41,14 +41,14 @@
             android:text="@string/welcome_to_dawai_buddy_login"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="@color/colorTextPrimary" />
+            android:textColor="@color/green_vdark_vlight" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_your_mobile_number_to_login_or_register_login"
             android:textSize="16sp"
-            android:textColor="@color/colorTextSecondary"
+            android:textColor="@color/grey_dark_light"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"/>
 
@@ -64,7 +64,7 @@
                 android:id="@+id/etPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/green_vdark_vlight"
                 android:inputType="phone"
                 android:maxLength="10"
                 android:textSize="18sp"/>
@@ -78,7 +78,7 @@
             android:textSize="18sp"
             android:layout_marginTop="24dp"
             app:backgroundTint="@color/green_dark_light"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="@color/white_dark_green"
             app:cornerRadius="8dp" />
 
     </LinearLayout>

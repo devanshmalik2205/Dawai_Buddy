@@ -27,4 +27,5 @@
     <string name="mood">Mood</string>
     <string name="meditate">Meditate</string>
     <string name="water">Water</string>
+    <string name="price_low_to_high_product_list">Price: Low to High</string>
 </resources>

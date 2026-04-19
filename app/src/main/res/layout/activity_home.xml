@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/background_2"
     android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:text="@string/deliver_to"
-                android:textColor="@color/colorTextSecondary"
+                android:textColor="@color/grey_dark_light"
                 android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/ivProfilePic"
@@ -51,7 +51,7 @@
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/green_vdark_vlight"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/tvDeliverTo"
@@ -63,12 +63,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="▼"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/green_vdark_vlight"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@id/tvLocation"
                 app:layout_constraintStart_toEndOf="@id/tvLocation"
                 app:layout_constraintTop_toTopOf="@id/tvLocation" />
-
 
             <!-- Notification Bell -->
             <ImageView
@@ -107,7 +106,7 @@
                 android:hint="Search 'Paracetamol' or 'Face wash'"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textColorHint="@color/colorTextSecondary"
+                android:textColorHint="@color/grey_dark_light"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/health"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/green_vdark_vlight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -167,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/mood"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/green_vdark_vlight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -190,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/meditate"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/green_vdark_vlight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -213,82 +212,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/water"
-                        android:textColor="@color/colorTextPrimary"
+                        android:textColor="@color/green_vdark_vlight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Flash Deal Banner -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvFlashDeal"
+            <!-- Auto Scrolling Flash Deal Banner replacing the CardView -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpFlashDeals"
                 android:layout_width="0dp"
                 android:layout_height="140dp"
                 android:layout_marginTop="24dp"
-                app:cardBackgroundColor="#438BFF"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llQuickLinks">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <!-- Placeholder for the right-side first aid image -->
-                    <ImageView
-                        android:layout_width="160dp"
-                        android:layout_height="match_parent"
-                        android:background="#5C9CFF"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/card_sale_view"
-                        android:scaleType="centerCrop" />
-
-                    <TextView
-                        android:id="@+id/tvFlashDealTag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="20dp"
-                        android:text="FLASH DEAL"
-                        android:textColor="#B3E5FC"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvFlashDealTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="160dp"
-                        android:text="Flat 25% Off\non First Aid"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvFlashDealTag" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:backgroundTint="#FFFFFF"
-                        android:text="SHOP NOW"
-                        android:textColor="#438BFF"
-                        android:textSize="10sp"
-                        app:cornerRadius="18dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvFlashDealTitle" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toBottomOf="@id/llQuickLinks" />
 
             <!-- Shop by Category Header -->
             <TextView
@@ -297,11 +235,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Shop by Category"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/green_vdark_vlight"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cvFlashDeal" />
+                app:layout_constraintTop_toBottomOf="@id/vpFlashDeals" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -315,111 +253,15 @@
                 app:layout_constraintTop_toTopOf="@id/tvCategoryHeader" />
 
             <!-- Category Grid Section -->
-            <LinearLayout
-                android:id="@+id/llCategories"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategories"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvCategoryHeader">
-
-                <!-- Row 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <!-- Medicines -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1.6"
-                        app:cardBackgroundColor="#E8F5E9"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-                        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medicines" android:textColor="@color/green_dark_light" android:textStyle="bold" android:textSize="14sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Clinically Proved" android:textColor="@color/green_dark_light" android:textSize="10sp" />
-                            <ImageView android:layout_width="40dp" android:layout_height="40dp" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" android:src="@drawable/medicines_card" android:scaleX="2" android:scaleY="2"/>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Wellness -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        app:cardBackgroundColor="#FFF3E0"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-                        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wellness" android:textColor="#8D6E63" android:textStyle="bold" android:textSize="12sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Vital Health" android:textColor="#8D6E63" android:textSize="10sp" />
-                            <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="8dp" android:src="@drawable/wellness_card" android:scaleX="2" android:scaleY="2"/>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Personal Care -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        app:cardBackgroundColor="#F3E5F5"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-                        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Body Care" android:textColor="#7B1FA2" android:textStyle="bold" android:textSize="12sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Care Essentials" android:textColor="#7B1FA2" android:textSize="10sp" />
-                            <ImageView android:layout_width="32dp" android:layout_height="32dp" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="8dp" android:src="@drawable/personal_care_card" android:scaleX="2" android:scaleY="2"/>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <!-- Row 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="8dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <!-- First Aid -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        app:cardBackgroundColor="#E3F2FD"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-                        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="First Aid" android:textColor="#1976D2" android:textStyle="bold" android:textSize="12sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:text="Instant Relief" android:textColor="#1976D2" android:textSize="10sp" />
-                            <ImageView android:layout_width="36dp" android:layout_height="36dp" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_marginBottom="4dp" android:src="@drawable/first_aid_card" android:scaleX="2" android:scaleY="2"/>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Ayurveda -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2.6"
-                        app:cardBackgroundColor="#FFEBEE"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
-                        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:padding="16dp">
-                            <TextView android:id="@+id/tvAyurveda" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ayurveda" android:textColor="#C2185B" android:textStyle="bold" android:textSize="16sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tvAyurveda" android:text="Natural Healing" android:textColor="#E91E63" android:textSize="10sp" />
-                            <ImageView android:layout_width="48dp" android:layout_height="48dp" android:layout_alignParentBottom="true" android:layout_alignParentEnd="true" android:src="@drawable/ayurveda_card" android:scaleX="2" android:scaleY="2"/>
-                        </RelativeLayout>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/tvCategoryHeader" />
 
             <!-- Daily Mindfulness Header -->
             <TextView
@@ -428,14 +270,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Daily Mindfulness"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="@color/green_vdark_vlight"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llCategories" />
+                app:layout_constraintTop_toBottomOf="@id/rvCategories" />
 
             <!-- Mindfulness Banner -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvMindfulness"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginTop="16dp"
@@ -452,13 +295,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <!-- Placeholder for meditating image -->
                     <ImageView
+                        android:id="@+id/ivMindfulnessBg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop" />
 
-                    <!-- Gradient Overlay -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -514,7 +356,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/login_bg"
         app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/colorTextPrimary"
+        app:itemTextColor="@color/green_vdark_vlight"
         app:itemActiveIndicatorStyle="@style/CustomActiveIndicator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
