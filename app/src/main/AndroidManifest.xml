@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DawaiBuddy">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProductDetailActivity"
             android:exported="false" />
         <activity

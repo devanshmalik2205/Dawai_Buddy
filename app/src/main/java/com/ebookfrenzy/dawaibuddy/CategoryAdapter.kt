@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ebookfrenzy.dawaibuddy.databinding.ItemCategoryBinding
+import com.ebookfrenzy.dawaibuddy.objects.Category
 
 class CategoryAdapter(private val categoryList: List<Category>) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {

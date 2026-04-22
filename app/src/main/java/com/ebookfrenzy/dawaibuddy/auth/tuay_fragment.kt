@@ -9,7 +9,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ebookfrenzy.dawaibuddy.AuthActivity
-import com.ebookfrenzy.dawaibuddy.User
+import com.ebookfrenzy.dawaibuddy.objects.User
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentTuayFragmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

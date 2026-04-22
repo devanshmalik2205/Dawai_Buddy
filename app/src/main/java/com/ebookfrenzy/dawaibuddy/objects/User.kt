@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.objects
 
 data class User(
     var uid: String = "", // Added to store the Firebase Auth UID

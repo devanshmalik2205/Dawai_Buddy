@@ -1,5 +1,6 @@
 package com.ebookfrenzy.dawaibuddy
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -50,6 +51,20 @@ class FlashDealAdapter(private val flashDeals: List<FlashDeal>) :
                 .into(binding.ivFlashDealBg)
         } else {
             binding.ivFlashDealBg.setImageResource(R.drawable.promotion_1)
+        }
+
+        // Handle the "Shop Now" button click with filter logic
+        binding.btnShopNow.setOnClickListener {
+            val intent = Intent(it.context, ProductListActivity::class.java)
+
+            // Pass the filtering data from Firebase to the Product List page
+            intent.putExtra("FILTER_TYPE", deal.filterType)
+            intent.putExtra("FILTER_VALUE", deal.filterValue)
+
+            // Use the deal title as the page header (e.g., "Himalaya Mega Sale")
+            intent.putExtra("CATEGORY_NAME", deal.title)
+
+            it.context.startActivity(intent)
         }
     }
 

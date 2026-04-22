@@ -16,4 +16,6 @@
 
     <color name="background_1">#FFFBF1</color>
     <color name="background_2">#ffff</color>
+
+    <color name="subtext_fade">#888888</color>
 </resources>
