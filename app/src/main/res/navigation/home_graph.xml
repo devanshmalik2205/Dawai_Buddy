@@ -3,32 +3,88 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_graph"
-    app:startDestination="@id/mainPageFragment">
+    app:startDestination="@id/nav_home">
 
+    <!-- Replaced @id/mainPageFragment with @id/nav_home to match bottom_nav_menu -->
     <fragment
-        android:id="@+id/mainPageFragment"
+        android:id="@+id/nav_home"
         android:name="com.ebookfrenzy.dawaibuddy.MainPageFragment"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" >
         <action
             android:id="@+id/action_mainPageFragment_to_profileFragment2"
-            app:destination="@id/profileFragment"
+            app:destination="@id/nav_profile"
             app:enterAnim="@anim/in"
             app:exitAnim="@anim/out"
             app:popEnterAnim="@anim/in"
             app:popExitAnim="@anim/out"/>
+        <action
+            android:id="@+id/action_nav_home_to_nav_wellness"
+            app:destination="@id/nav_wellness" />
+        <action
+            android:id="@+id/action_nav_home_to_meditateFragment"
+            app:destination="@id/nav_meditate" />
     </fragment>
+
+    <!-- Replaced @id/profileFragment with @id/nav_profile to match bottom_nav_menu -->
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/nav_profile"
         android:name="com.ebookfrenzy.dawaibuddy.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_mainPageFragment2"
-            app:destination="@id/mainPageFragment"
+            app:destination="@id/nav_home"
             app:enterAnim="@anim/in"
             app:exitAnim="@anim/out"
             app:popEnterAnim="@anim/in"
             app:popExitAnim="@anim/out"/>
+        <action
+            android:id="@+id/action_nav_profile_to_nav_wellness2"
+            app:destination="@id/nav_wellness" />
+        <action
+            android:id="@+id/action_nav_profile_to_meditateFragment"
+            app:destination="@id/nav_meditate" />
     </fragment>
+
+    <!-- Replaced @id/wellnessFragment with @id/nav_wellness to match bottom_nav_menu -->
+    <fragment
+        android:id="@+id/nav_wellness"
+        android:name="com.ebookfrenzy.dawaibuddy.home.WellnessFragment"
+        android:label="fragment_wellness"
+        tools:layout="@layout/fragment_wellness" >
+        <action
+            android:id="@+id/action_nav_wellness_to_nav_profile"
+            app:destination="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_wellness_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_wellness_to_meditateFragment"
+            app:destination="@id/nav_meditate" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_meditate"
+        android:name="com.ebookfrenzy.dawaibuddy.home.MeditateFragment"
+        android:label="fragment_meditate"
+        tools:layout="@layout/fragment_meditate" >
+        <action
+            android:id="@+id/action_meditateFragment_to_nav_wellness"
+            app:destination="@id/nav_wellness" />
+        <action
+            android:id="@+id/action_meditateFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_meditateFragment_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/nowPlayingFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.NowPlayingFragment"
+        android:label="fragment_now_playing"
+        tools:layout="@layout/fragment_now_playing" />
+
+
+    <!-- Updated nav_meditate to point to your actual MeditateFragment -->
+
 </navigation>

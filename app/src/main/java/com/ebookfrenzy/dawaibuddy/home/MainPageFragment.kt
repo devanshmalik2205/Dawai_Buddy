@@ -4,24 +4,31 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
+import com.ebookfrenzy.dawaibuddy.adapters.CategoryAdapter
+import com.ebookfrenzy.dawaibuddy.adapters.FlashDealAdapter
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentMainPageBinding
+import com.ebookfrenzy.dawaibuddy.models.SharedAudioViewModel
 import com.ebookfrenzy.dawaibuddy.objects.Category
+import com.ebookfrenzy.dawaibuddy.objects.FlashDeal
+import com.ebookfrenzy.dawaibuddy.objects.MeditationTrack
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
@@ -38,6 +45,15 @@ class MainPageFragment : Fragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val db = FirebaseFirestore.getInstance()
+
+    // CONNECT TO GLOBAL AUDIO
+    private val audioViewModel: SharedAudioViewModel by activityViewModels()
+
+    // List to keep track of loaded songs for next/prev functionality
+    private var currentTrackList: List<MeditationTrack> = emptyList()
+
+    private var progressHandler: Handler? = null
+    private var progressRunnable: Runnable? = null
 
     private val sliderHandler = Handler(Looper.getMainLooper())
     private val sliderRunnable = Runnable {
@@ -86,22 +102,153 @@ class MainPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        audioViewModel.initializeController(requireContext())
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
         }
 
-        binding.tvLocation.setOnClickListener {
-            openLocationPicker()
-        }
+        binding.tvLocation.setOnClickListener { openLocationPicker() }
 
         setupRecyclerView()
+
+        // 🔥 INSTANT FETCHING WITH SNAPSHOTS
         fetchCategories()
         fetchFlashDeals()
-        fetchDailyMindfulness()
+        fetchAllTracks()
 
         checkPermissionsAndFetchLocation()
+
+        // --- BACKGROUND AUDIO SYNC & PROGRESS BAR ---
+        progressHandler = Handler(Looper.getMainLooper())
+        progressRunnable = Runnable {
+            audioViewModel.player?.let { player ->
+                if (player.isPlaying) {
+                    val duration = player.duration
+                    val current = player.currentPosition
+                    if (duration > 0) {
+                        val pb = binding.root.findViewById<android.widget.ProgressBar>(R.id.pbMindfulnessProgress)
+                        pb?.max = duration.toInt()
+                        pb?.progress = current.toInt()
+                    }
+                }
+            }
+            progressHandler?.postDelayed(progressRunnable!!, 1000)
+        }
+
+        audioViewModel.isPlaying.observe(viewLifecycleOwner) { isPlaying ->
+            val ivPlay = binding.root.findViewById<ImageView>(R.id.ivMindfulnessPlay)
+            if (isPlaying) {
+                ivPlay?.setImageResource(android.R.drawable.ic_media_pause)
+                progressRunnable?.let { progressHandler?.post(it) }
+            } else {
+                ivPlay?.setImageResource(android.R.drawable.ic_media_play)
+                progressRunnable?.let { progressHandler?.removeCallbacks(it) }
+            }
+        }
+
+        audioViewModel.currentTrack.observe(viewLifecycleOwner) { track ->
+            val tvTitle = binding.root.findViewById<TextView>(R.id.tvMindfulnessTitle)
+            val tvSubtitle = binding.root.findViewById<TextView>(R.id.tvMindfulnessSubtitle)
+            val pb = binding.root.findViewById<android.widget.ProgressBar>(R.id.pbMindfulnessProgress)
+
+            if (track != null) {
+                tvTitle?.text = track.title
+                tvSubtitle?.text = track.artist
+            } else {
+                tvTitle?.text = "Tap to play music"
+                tvSubtitle?.text = "Start a random meditation"
+                pb?.progress = 0
+            }
+        }
+
+        audioViewModel.artworkBitmap.observe(viewLifecycleOwner) { bitmap ->
+            val ivArt = binding.root.findViewById<ImageView>(R.id.ivMindfulnessArt)
+            if (bitmap != null) {
+                ivArt?.setImageBitmap(bitmap)
+            } else {
+                ivArt?.setBackgroundColor(Color.parseColor("#E0E0E0"))
+                ivArt?.setImageResource(0)
+            }
+        }
+
+        // --- INLINE MEDIA CONTROLS ---
+        val cvPlay = binding.root.findViewById<View>(R.id.cvMindfulnessPlay)
+        val ivPrev = binding.root.findViewById<View>(R.id.ivMindfulnessPrev)
+        val ivNext = binding.root.findViewById<View>(R.id.ivMindfulnessNext)
+
+        cvPlay?.setOnClickListener {
+            if (audioViewModel.currentTrack.value != null) {
+                audioViewModel.player?.let { player ->
+                    if (player.isPlaying) player.pause() else player.play()
+                }
+            } else {
+                playRandomTrack()
+            }
+        }
+
+        ivNext?.setOnClickListener {
+            val currentTrack = audioViewModel.currentTrack.value
+            if (currentTrack != null && currentTrackList.isNotEmpty()) {
+                val currentIndex = currentTrackList.indexOfFirst { it.title == currentTrack.title }
+                if (currentIndex != -1) {
+                    val nextIndex = if (currentIndex + 1 < currentTrackList.size) currentIndex + 1 else 0
+                    audioViewModel.playTrack(currentTrackList[nextIndex])
+                    return@setOnClickListener
+                }
+            }
+            audioViewModel.player?.seekToNextMediaItem()
+        }
+
+        ivPrev?.setOnClickListener {
+            val currentTrack = audioViewModel.currentTrack.value
+            if (currentTrack != null && currentTrackList.isNotEmpty()) {
+                val currentIndex = currentTrackList.indexOfFirst { it.title == currentTrack.title }
+                if (currentIndex != -1) {
+                    val prevIndex = if (currentIndex - 1 >= 0) currentIndex - 1 else currentTrackList.size - 1
+                    audioViewModel.playTrack(currentTrackList[prevIndex])
+                    return@setOnClickListener
+                }
+            }
+            audioViewModel.player?.seekToPreviousMediaItem()
+        }
+
+        // Click the whole Card -> Opens NowPlaying
+        binding.cvMindfulness.setOnClickListener {
+            if (audioViewModel.currentTrack.value != null) {
+                val bottomSheet = NowPlayingFragment()
+                bottomSheet.show(parentFragmentManager, "NowPlaying")
+            } else {
+                playRandomTrack()
+            }
+        }
+    }
+
+    // 🔥 FASTER FETCHING: Collection Group Query instantly grabs ALL tracks from ALL categories
+    private fun fetchAllTracks() {
+        db.collectionGroup("tracks")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null || snapshot == null) return@addSnapshotListener
+
+                val allTracks = snapshot.documents.mapNotNull {
+                    it.toObject(MeditationTrack::class.java)
+                }
+
+                if (allTracks.isNotEmpty()) {
+                    currentTrackList = allTracks.shuffled() // Shuffle to make it a random playlist
+                }
+            }
+    }
+
+    private fun playRandomTrack() {
+        if (currentTrackList.isNotEmpty()) {
+            val randomTrack = currentTrackList.random()
+            audioViewModel.playTrack(randomTrack)
+            Toast.makeText(requireContext(), "Playing ${randomTrack.title}", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Loading tracks, please wait...", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onResume() {
@@ -116,6 +263,8 @@ class MainPageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        progressRunnable?.let { progressHandler?.removeCallbacks(it) }
+        progressHandler = null
         _binding = null
     }
 
@@ -123,47 +272,31 @@ class MainPageFragment : Fragment() {
         binding.rvCategories.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
+    // 🔥 INSTANT LOADING via addSnapshotListener
     private fun fetchCategories() {
-        db.collection("categories")
-            .get()
-            .addOnSuccessListener { result ->
-                if (result.isEmpty) return@addOnSuccessListener
+        db.collection("categories").addSnapshotListener { snapshot, error ->
+            if (error != null || snapshot == null || snapshot.isEmpty) return@addSnapshotListener
 
-                val categoryList = mutableListOf<Category>()
-                for (document in result) {
-                    val category = document.toObject(Category::class.java)
-                    categoryList.add(category)
-                }
-                binding.rvCategories.adapter = CategoryAdapter(categoryList)
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Error fetching categories", e)
-            }
+            val categoryList = mutableListOf<Category>()
+            for (document in snapshot) categoryList.add(document.toObject(Category::class.java))
+            binding.rvCategories.adapter = CategoryAdapter(categoryList)
+        }
     }
 
+    // 🔥 INSTANT LOADING via addSnapshotListener
     private fun fetchFlashDeals() {
-        db.collection("promotions")
-            .get()
-            .addOnSuccessListener { result ->
-                if (result.isEmpty) return@addOnSuccessListener
+        db.collection("promotions").addSnapshotListener { snapshot, error ->
+            if (error != null || snapshot == null || snapshot.isEmpty) return@addSnapshotListener
 
-                val flashDeals = mutableListOf<FlashDeal>()
-                for (document in result) {
-                    val deal = document.toObject(FlashDeal::class.java)
-                    flashDeals.add(deal)
-                }
-
-                setupViewPager(flashDeals)
-            }
-            .addOnFailureListener { e ->
-                Log.e("Firestore", "Error fetching flash deals", e)
-            }
+            val flashDeals = mutableListOf<FlashDeal>()
+            for (document in snapshot) flashDeals.add(document.toObject(FlashDeal::class.java))
+            setupViewPager(flashDeals)
+        }
     }
 
     private fun setupViewPager(flashDeals: List<FlashDeal>) {
         val adapter = FlashDealAdapter(flashDeals)
         binding.vpFlashDeals.adapter = adapter
-
         binding.vpFlashDeals.clipToPadding = false
         binding.vpFlashDeals.clipChildren = false
         binding.vpFlashDeals.offscreenPageLimit = 3
@@ -178,52 +311,21 @@ class MainPageFragment : Fragment() {
         })
     }
 
-    private fun fetchDailyMindfulness() {
-        db.collection("daily_mindfulness").document("today_feature")
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val title = document.getString("title") ?: ""
-                    val duration = document.getString("duration") ?: ""
-                    val subtitle = document.getString("subtitle") ?: ""
-                    val backgroundUrl = document.getString("backgroundUrl") ?: ""
-
-                    binding.tvZenTitle.text = title
-                    binding.tvZenSubtitle.text = "$duration • $subtitle"
-
-                    if (backgroundUrl.isNotEmpty()) {
-                        Glide.with(requireContext()).load(backgroundUrl).into(binding.ivMindfulnessBg)
-                    }
-                }
-            }
-    }
-
     private fun checkPermissionsAndFetchLocation() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fetchCurrentLocation()
         } else {
-            locationPermissionRequest.launch(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ))
+            locationPermissionRequest.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
         }
     }
 
     @SuppressLint("MissingPermission")
     private fun fetchCurrentLocation() {
         binding.tvLocation.text = "Fetching location..."
-
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    getAddressFromLocation(location.latitude, location.longitude)
-                } else {
-                    binding.tvLocation.text = "Select Location"
-                }
-            }
-            .addOnFailureListener {
-                binding.tvLocation.text = "Failed to get location"
-            }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) getAddressFromLocation(location.latitude, location.longitude)
+            else binding.tvLocation.text = "Select Location"
+        }.addOnFailureListener { binding.tvLocation.text = "Failed to get location" }
     }
 
     private fun getAddressFromLocation(latitude: Double, longitude: Double) {
@@ -231,36 +333,22 @@ class MainPageFragment : Fragment() {
             try {
                 val geocoder = Geocoder(requireContext(), Locale.getDefault())
                 val addresses = geocoder.getFromLocation(latitude, longitude, 1)
-
                 if (!addresses.isNullOrEmpty()) {
                     val address = addresses[0]
                     val subLocality = address.subLocality ?: address.featureName ?: ""
                     val locality = address.locality ?: address.adminArea ?: "Unknown"
-
-                    val displayText = if (subLocality.isNotEmpty() && subLocality != locality) {
-                        "$subLocality, $locality"
-                    } else {
-                        "$locality"
-                    }
-
-                    requireActivity().runOnUiThread {
-                        binding.tvLocation.text = "$displayText"
-                    }
+                    val displayText = if (subLocality.isNotEmpty() && subLocality != locality) "$subLocality, $locality" else "$locality"
+                    requireActivity().runOnUiThread { binding.tvLocation.text = "$displayText" }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
-                requireActivity().runOnUiThread {
-                    binding.tvLocation.text = "Lat: ${"%.4f".format(latitude)}, Lng: ${"%.4f".format(longitude)} ▼"
-                }
+                requireActivity().runOnUiThread { binding.tvLocation.text = "Lat: ${"%.4f".format(latitude)}, Lng: ${"%.4f".format(longitude)} ▼" }
             }
         }.start()
     }
 
     private fun openLocationPicker() {
         val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-            .build(requireContext())
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(requireContext())
         startAutocomplete.launch(intent)
     }
-
 }

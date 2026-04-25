@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.objects
 
 data class FlashDeal(
     val id: String = "",

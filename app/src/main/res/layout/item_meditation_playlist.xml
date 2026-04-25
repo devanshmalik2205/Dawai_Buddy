@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Changed layout_width from 160dp to match_parent to adapt to the grid size -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:background="@android:color/transparent"
+    android:layout_margin="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardIcon"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        app:cardBackgroundColor="#9DABF5"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Changed from question mark icon to full layout cover -->
+        <ImageView
+            android:id="@+id/ivCategoryIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvPlaylistTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Evening Calm"
+        android:textColor="#111111"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/cardIcon" />
+
+    <TextView
+        android:id="@+id/tvPlaylistSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Ambient"
+        android:textColor="#757575"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/tvPlaylistTitle" />
+
+    <TextView
+        android:id="@+id/btnPlaySmall"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_light_blue_rounded"
+        android:gravity="center"
+        android:text="▶ Play"
+        android:textColor="#1976D2"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPlaylistSubtitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

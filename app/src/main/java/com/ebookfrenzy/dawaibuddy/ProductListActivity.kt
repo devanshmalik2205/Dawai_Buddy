@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.ebookfrenzy.dawaibuddy.adapters.ProductAdapter
 import com.ebookfrenzy.dawaibuddy.databinding.ActivityProductListBinding
 import com.ebookfrenzy.dawaibuddy.objects.Product
 import com.google.firebase.firestore.FirebaseFirestore

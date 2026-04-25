@@ -280,12 +280,15 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvMindfulness"
                 android:layout_width="0dp"
-                android:layout_height="160dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="#B0B0B0"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
+                app:cardElevation="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -293,53 +296,120 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/ivMindfulnessBg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/music_card" />
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvZenTitle"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvMindfulnessTitle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="Zen Focus Beats"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/tvZenSubtitle"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvZenSubtitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="15 min • Deep Concentration"
-                        android:textColor="#E0E0E0"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/play_button"
-                        android:padding="8dp"
+                        android:text="Tap to play music"
+                        android:textColor="#212121"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/cvMindfulnessArt"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvMindfulnessSubtitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Start a random meditation"
+                        android:textColor="#757575"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/cvMindfulnessArt"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvMindfulnessTitle" />
+
+                    <!-- INLINE MEDIA CONTROLS -->
+                    <LinearLayout
+                        android:id="@+id/llMindfulnessControls"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvMindfulnessSubtitle">
+
+                        <ImageView
+                            android:id="@+id/ivMindfulnessPrev"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:padding="6dp"
+                            android:src="@android:drawable/ic_media_previous"
+                            app:tint="#424242"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"/>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cvMindfulnessPlay"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginHorizontal="16dp"
+                            app:cardBackgroundColor="#4CAF50"
+                            app:cardCornerRadius="24dp"
+                            app:cardElevation="2dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground">
+                            <ImageView
+                                android:id="@+id/ivMindfulnessPlay"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="12dp"
+                                android:src="@android:drawable/ic_media_play"
+                                app:tint="#FFFFFF" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <ImageView
+                            android:id="@+id/ivMindfulnessNext"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:padding="6dp"
+                            android:src="@android:drawable/ic_media_next"
+                            app:tint="#424242"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"/>
+                    </LinearLayout>
+
+                    <!-- ALBUM ART -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cvMindfulnessArt"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivMindfulnessArt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:background="#E0E0E0" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- PROGRESS BAR -->
+                    <ProgressBar
+                        android:id="@+id/pbMindfulnessProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:progressTint="#4CAF50"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/llMindfulnessControls" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

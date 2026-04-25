@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    app:cardBackgroundColor="#1A1A1A"
+    app:cardElevation="8dp"
+    android:background="@drawable/login_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        android:paddingBottom="40dp">
+
+        <!-- Custom Tabs (Day | Week | Month) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout android:id="@+id/tabDay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:layout_marginEnd="32dp" android:clickable="true" android:background="?attr/selectableItemBackground">
+                <TextView android:id="@+id/tvTabDay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Day" android:textColor="#888888" android:textSize="16sp" />
+                <View android:id="@+id/viewTabDayLine" android:layout_width="30dp" android:layout_height="3dp" android:background="#FFFFFF" android:layout_marginTop="4dp" android:visibility="invisible" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tabWeek" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:clickable="true" android:background="?attr/selectableItemBackground">
+                <TextView android:id="@+id/tvTabWeek" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Week" android:textColor="#FFFFFF" android:textSize="16sp" android:textStyle="bold" />
+                <View android:id="@+id/viewTabWeekLine" android:layout_width="30dp" android:layout_height="3dp" android:background="#FFFFFF" android:layout_marginTop="4dp" android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/tabMonth" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:layout_marginStart="32dp" android:clickable="true" android:background="?attr/selectableItemBackground">
+                <TextView android:id="@+id/tvTabMonth" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Month" android:textColor="#888888" android:textSize="16sp" />
+                <View android:id="@+id/viewTabMonthLine" android:layout_width="30dp" android:layout_height="3dp" android:background="#FFFFFF" android:layout_marginTop="4dp" android:visibility="invisible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Date Paginator -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp">
+
+            <ImageView
+                android:id="@+id/btnPrev"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_media_previous"
+                app:tint="#888888"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvDateRange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvTotalSteps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👟 0 steps"
+                    android:textColor="#888888"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnNext"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_media_next"
+                app:tint="#888888"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"/>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- DAY CHART (Hourly) -->
+            <LinearLayout
+                android:id="@+id/layoutDayChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="32dp"
+                    android:paddingHorizontal="16dp">
+
+                    <!-- Grid Lines -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:weightSum="3">
+                        <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF" />
+                        <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF" />
+                        <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#55FFFFFF" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/dayBarsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
+                        <!-- Populated programmatically -->
+                    </LinearLayout>
+                </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingHorizontal="16dp"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="start" android:text="12am" android:textColor="#888888" android:textSize="10sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="6am" android:textColor="#888888" android:textSize="10sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="12pm" android:textColor="#888888" android:textSize="10sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="6pm" android:textColor="#888888" android:textSize="10sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="end" android:text="12am" android:textColor="#888888" android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- WEEK CHART (Daily) -->
+            <LinearLayout
+                android:id="@+id/layoutWeekChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="32dp"
+                    android:paddingHorizontal="16dp">
+
+                    <!-- Background Grid Lines -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:weightSum="3">
+                        <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF" />
+                        <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF" />
+                        <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#55FFFFFF" />
+                    </LinearLayout>
+
+                    <!-- Bars -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
+
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace1" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar1" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace2" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar2" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace3" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar3" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace4" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar4" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace5" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar5" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace6" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar6" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical">
+                            <View android:id="@+id/dlgSpace7" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="100" />
+                            <com.google.android.material.card.MaterialCardView android:id="@+id/dlgBar7" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginHorizontal="8dp" android:layout_weight="0" app:cardBackgroundColor="#64B5F6" app:cardCornerRadius="4dp" app:cardElevation="0dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- X-axis Labels -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingHorizontal="16dp"
+                    android:orientation="horizontal">
+                    <TextView android:id="@+id/dlgTvDay1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="MON" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:id="@+id/dlgTvDay2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="TUE" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:id="@+id/dlgTvDay3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="WED" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:id="@+id/dlgTvDay4" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="THU" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="12sp" />
+                    <TextView android:id="@+id/dlgTvDay5" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="FRI" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:id="@+id/dlgTvDay6" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="SAT" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:id="@+id/dlgTvDay7" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="SUN" android:textColor="#888888" android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- MONTH CHART (Bubbles/Grid) -->
+            <LinearLayout
+                android:id="@+id/layoutMonthChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="8dp"
+                android:visibility="gone">
+
+                <GridLayout
+                    android:id="@+id/monthGridContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:columnCount="7"
+                    android:rowCount="5"
+                    android:layout_marginTop="16dp"
+                    android:useDefaultMargins="true"
+                    android:alignmentMode="alignBounds"
+                    android:rowOrderPreserved="false">
+                    <!-- Populated programmatically with overlapping bubbles -->
+                </GridLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Mon" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Tue" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Wed" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Thu" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Fri" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Sat" android:textColor="#888888" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="Sun" android:textColor="#888888" android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

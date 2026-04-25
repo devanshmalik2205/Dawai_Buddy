@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.adapters
 
 import android.content.Intent
 import android.graphics.Paint
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ebookfrenzy.dawaibuddy.ProductDetailActivity
+import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.ItemProductBinding
 import com.ebookfrenzy.dawaibuddy.objects.Product
 

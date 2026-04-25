@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.adapters
 
 import android.content.Intent
 import android.graphics.Color
@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ebookfrenzy.dawaibuddy.objects.FlashDeal
+import com.ebookfrenzy.dawaibuddy.ProductListActivity
+import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.ItemFlashDealBinding
 
 class FlashDealAdapter(private val flashDeals: List<FlashDeal>) :
