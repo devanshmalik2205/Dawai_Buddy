@@ -5,86 +5,243 @@
     android:id="@+id/home_graph"
     app:startDestination="@id/nav_home">
 
-    <!-- Replaced @id/mainPageFragment with @id/nav_home to match bottom_nav_menu -->
+    <!-- Main Home Page -->
     <fragment
         android:id="@+id/nav_home"
         android:name="com.ebookfrenzy.dawaibuddy.MainPageFragment"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" >
+
         <action
-            android:id="@+id/action_mainPageFragment_to_profileFragment2"
+            android:id="@+id/action_nav_home_to_nav_profile"
             app:destination="@id/nav_profile"
             app:enterAnim="@anim/in"
             app:exitAnim="@anim/out"
             app:popEnterAnim="@anim/in"
             app:popExitAnim="@anim/out"/>
+
         <action
             android:id="@+id/action_nav_home_to_nav_wellness"
-            app:destination="@id/nav_wellness" />
-        <action
-            android:id="@+id/action_nav_home_to_meditateFragment"
-            app:destination="@id/nav_meditate" />
-    </fragment>
-
-    <!-- Replaced @id/profileFragment with @id/nav_profile to match bottom_nav_menu -->
-    <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.ebookfrenzy.dawaibuddy.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_mainPageFragment2"
-            app:destination="@id/nav_home"
+            app:destination="@id/nav_wellness"
             app:enterAnim="@anim/in"
             app:exitAnim="@anim/out"
             app:popEnterAnim="@anim/in"
             app:popExitAnim="@anim/out"/>
+
         <action
-            android:id="@+id/action_nav_profile_to_nav_wellness2"
-            app:destination="@id/nav_wellness" />
+            android:id="@+id/action_nav_home_to_productListFragment"
+            app:destination="@id/productListFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+
         <action
-            android:id="@+id/action_nav_profile_to_meditateFragment"
-            app:destination="@id/nav_meditate" />
+            android:id="@+id/action_nav_home_to_checkoutFragment"
+            app:destination="@id/checkoutFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+
+        <action
+            android:id="@+id/action_nav_home_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+
+        <action
+            android:id="@+id/action_nav_home_to_moodTrackerFragment"
+            app:destination="@id/moodTrackerFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+
+        <action
+            android:id="@+id/action_nav_home_to_waterLoggerFragment"
+            app:destination="@id/waterLoggerFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
     </fragment>
 
-    <!-- Replaced @id/wellnessFragment with @id/nav_wellness to match bottom_nav_menu -->
+    <!-- Profile Page -->
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.ebookfrenzy.dawaibuddy.home.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_orderHistoryFragment"
+            app:destination="@id/orderHistoryFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out" />
+        <action
+            android:id="@+id/action_nav_profile_to_orderHistoryFragment2"
+            app:destination="@id/orderHistoryFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+    </fragment>
+
+    <!-- Wellness Section -->
     <fragment
         android:id="@+id/nav_wellness"
         android:name="com.ebookfrenzy.dawaibuddy.home.WellnessFragment"
         android:label="fragment_wellness"
         tools:layout="@layout/fragment_wellness" >
         <action
-            android:id="@+id/action_nav_wellness_to_nav_profile"
-            app:destination="@id/nav_profile" />
+            android:id="@+id/action_nav_wellness_to_waterLoggerFragment"
+            app:destination="@id/waterLoggerFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
         <action
-            android:id="@+id/action_nav_wellness_to_nav_home"
-            app:destination="@id/nav_home" />
-        <action
-            android:id="@+id/action_nav_wellness_to_meditateFragment"
-            app:destination="@id/nav_meditate" />
+            android:id="@+id/action_nav_wellness_to_moodTrackerFragment"
+            app:destination="@id/moodTrackerFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
     </fragment>
+
+    <!-- Meditation Section -->
     <fragment
         android:id="@+id/nav_meditate"
         android:name="com.ebookfrenzy.dawaibuddy.home.MeditateFragment"
         android:label="fragment_meditate"
         tools:layout="@layout/fragment_meditate" >
         <action
-            android:id="@+id/action_meditateFragment_to_nav_wellness"
-            app:destination="@id/nav_wellness" />
-        <action
-            android:id="@+id/action_meditateFragment_to_nav_home"
-            app:destination="@id/nav_home" />
-        <action
-            android:id="@+id/action_meditateFragment_to_nav_profile"
-            app:destination="@id/nav_profile" />
+            android:id="@+id/action_nav_meditate_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
     </fragment>
+
+    <!-- Audio Player -->
     <fragment
         android:id="@+id/nowPlayingFragment"
         android:name="com.ebookfrenzy.dawaibuddy.NowPlayingFragment"
         android:label="fragment_now_playing"
         tools:layout="@layout/fragment_now_playing" />
 
+    <!-- Health Tools -->
+    <fragment
+        android:id="@+id/waterLoggerFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.WaterLoggerFragment"
+        android:label="fragment_water_logger"
+        tools:layout="@layout/fragment_water_logger" >
+        <action
+            android:id="@+id/action_waterLoggerFragment_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+        <action
+            android:id="@+id/action_waterLoggerFragment_to_nav_wellness"
+            app:destination="@id/nav_wellness"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+    </fragment>
 
-    <!-- Updated nav_meditate to point to your actual MeditateFragment -->
+    <fragment
+        android:id="@+id/moodTrackerFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.MoodTrackerFragment"
+        android:label="fragment_mood_tracker"
+        tools:layout="@layout/fragment_mood_tracker" >
+        <action
+            android:id="@+id/action_moodTrackerFragment_to_nav_home"
+            app:destination="@id/nav_home"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+        <action
+            android:id="@+id/action_moodTrackerFragment_to_nav_wellness"
+            app:destination="@id/nav_wellness"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+    </fragment>
+
+    <!-- Search -->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_nav_meditate"
+            app:destination="@id/nav_meditate"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+    </fragment>
+
+    <!-- Shopping Flow -->
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.checkout_product.ProductListFragment"
+        android:label="fragment_product_list"
+        tools:layout="@layout/fragment_product_list">
+
+        <action
+            android:id="@+id/action_productListFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out" />
+
+        <action
+            android:id="@+id/action_productListFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.checkout_product.ProductDetailFragment"
+        android:label="Product Details"
+        tools:layout="@layout/activity_product_detail" />
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.checkout_product.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" />
+
+    <!-- Order History -->
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.ebookfrenzy.dawaibuddy.checkout_product.OrderHistoryFragment"
+        android:label="fragment_order_history"
+        tools:layout="@layout/fragment_order_history" >
+        <action
+            android:id="@+id/action_orderHistoryFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/in"
+            app:exitAnim="@anim/out"
+            app:popEnterAnim="@anim/in"
+            app:popExitAnim="@anim/out"/>
+    </fragment>
 
 </navigation>

@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.ebookfrenzy.dawaibuddy.HomeActivity
+import com.ebookfrenzy.dawaibuddy.host_activities.HomeActivity
 import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentSplashFragmentBinding
 import com.google.firebase.auth.FirebaseAuth

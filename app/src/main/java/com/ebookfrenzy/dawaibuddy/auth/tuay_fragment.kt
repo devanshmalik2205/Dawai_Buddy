@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.ebookfrenzy.dawaibuddy.AuthActivity
+import com.ebookfrenzy.dawaibuddy.host_activities.AuthActivity
 import com.ebookfrenzy.dawaibuddy.objects.User
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentTuayFragmentBinding
 import com.google.firebase.auth.FirebaseAuth

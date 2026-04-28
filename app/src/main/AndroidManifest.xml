@@ -37,17 +37,12 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".ProductDetailActivity"
-            android:exported="false" />
+        <!-- Removed ProductDetailActivity and ProductListActivity as they are now Fragments -->
 
         <activity
-            android:name=".ProductListActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".HomeActivity"
-            android:exported="true">
+            android:name=".host_activities.HomeActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <!-- 1. Required: Tells Android this activity explains WHY permissions are needed -->
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
@@ -61,7 +56,7 @@
         </activity>
 
         <activity
-            android:name=".AuthActivity"
+            android:name=".host_activities.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

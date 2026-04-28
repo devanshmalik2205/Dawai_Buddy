@@ -1,7 +1,9 @@
 package com.ebookfrenzy.dawaibuddy.home
 
 import android.app.Dialog
+import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -13,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -28,6 +31,7 @@ import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.ebookfrenzy.dawaibuddy.objects.MeditationTrack
 import com.ebookfrenzy.dawaibuddy.NowPlayingFragment
 import com.ebookfrenzy.dawaibuddy.R
@@ -38,9 +42,15 @@ import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class WellnessFragment : Fragment() {
 
@@ -88,15 +98,30 @@ class WellnessFragment : Fragment() {
 
         audioViewModel.initializeController(requireContext())
 
-        // 🔥 INSTANT FETCHING WITH SNAPSHOTS
+        setDynamicGreeting()
         fetchUserData()
         fetchAllTracks()
+        fetchTodayWaterTotal()
+        fetchTodayMood()
 
         checkHealthConnectStatus()
 
+        // --- STREAK LOGIC ---
+        // Fetch the user's streak from your database/preferences here.
+        // Replace this hardcoded '1' with your dynamic variable from Firebase/ViewModel.
+        val userStreakDays = 1
+        updateStreakInProfile(userStreakDays)
+
         binding.cvConnectHealth.setOnClickListener { launchHealthConnectPermissions() }
         binding.cvStepsCard.setOnClickListener { showTrendDialog() }
-        binding.tvViewHistory.setOnClickListener { showTrendDialog() }
+
+        // --- NAVIGATION LINKS ---
+        binding.root.findViewById<View>(R.id.cvWaterCard)?.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_wellness_to_waterLoggerFragment)
+        }
+        binding.root.findViewById<View>(R.id.cvMoodCard)?.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_wellness_to_moodTrackerFragment)
+        }
 
         // --- BACKGROUND AUDIO SYNC & PROGRESS BAR ---
         progressHandler = Handler(Looper.getMainLooper())
@@ -106,7 +131,7 @@ class WellnessFragment : Fragment() {
                     val duration = player.duration
                     val current = player.currentPosition
                     if (duration > 0) {
-                        val pb = binding.root.findViewById<android.widget.ProgressBar>(R.id.pbMindfulnessProgress)
+                        val pb = _binding?.root?.findViewById<android.widget.ProgressBar>(R.id.pbMindfulnessProgress)
                         pb?.max = duration.toInt()
                         pb?.progress = current.toInt()
                     }
@@ -116,6 +141,7 @@ class WellnessFragment : Fragment() {
         }
 
         audioViewModel.isPlaying.observe(viewLifecycleOwner) { isPlaying ->
+            if (_binding == null) return@observe
             val ivPlay = binding.root.findViewById<ImageView>(R.id.ivMindfulnessPlay)
             if (isPlaying) {
                 ivPlay?.setImageResource(android.R.drawable.ic_media_pause)
@@ -127,6 +153,7 @@ class WellnessFragment : Fragment() {
         }
 
         audioViewModel.currentTrack.observe(viewLifecycleOwner) { track ->
+            if (_binding == null) return@observe
             val tvTitle = binding.root.findViewById<TextView>(R.id.tvMindfulnessTitle)
             val tvSubtitle = binding.root.findViewById<TextView>(R.id.tvMindfulnessSubtitle)
             val pb = binding.root.findViewById<android.widget.ProgressBar>(R.id.pbMindfulnessProgress)
@@ -142,6 +169,7 @@ class WellnessFragment : Fragment() {
         }
 
         audioViewModel.artworkBitmap.observe(viewLifecycleOwner) { bitmap ->
+            if (_binding == null) return@observe
             val ivArt = binding.root.findViewById<ImageView>(R.id.ivMindfulnessArt)
             if (bitmap != null) {
                 ivArt?.setImageBitmap(bitmap)
@@ -192,7 +220,6 @@ class WellnessFragment : Fragment() {
             audioViewModel.player?.seekToPreviousMediaItem()
         }
 
-        // Click the whole Card -> Opens NowPlaying
         binding.cvMindfulness.setOnClickListener {
             if (audioViewModel.currentTrack.value != null) {
                 val bottomSheet = NowPlayingFragment()
@@ -203,19 +230,69 @@ class WellnessFragment : Fragment() {
         }
     }
 
-    // 🔥 FASTER FETCHING: Collection Group Query grabs all tracks instantly
+    private fun setDynamicGreeting() {
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val greetingText = when (hour) {
+            in 0..11 -> "Good Morning,"
+            in 12..16 -> "Good Afternoon,"
+            in 17..20 -> "Good Evening,"
+            else -> "Good Night,"
+        }
+        binding.tvGreeting.text = greetingText
+    }
+
+    private fun updateStreakInProfile(streakDays: Int) {
+        // Formulate the streak text - Just the number as requested
+        val streakText = streakDays.toString()
+
+        // Reference the cvProfile view from your binding
+        val cvProfile = binding.cvProfile
+
+        // Check if cvProfile is a ViewGroup (like a CardView or ConstraintLayout)
+        if (cvProfile is ViewGroup) {
+            // Look for an existing streak label to avoid duplicates when fragment resumes
+            var tvStreak = cvProfile.findViewWithTag<TextView>("streakLabel")
+
+            if (tvStreak == null) {
+                // Create the Bold, Big, Green TextView programmatically
+                tvStreak = TextView(requireContext()).apply {
+                    tag = "streakLabel"
+                    setTextColor(Color.parseColor("#4CAF50")) // Bold Green Color
+                    setTypeface(null, Typeface.BOLD)
+                    textSize = 32f // Big letters
+                    gravity = Gravity.CENTER
+                }
+
+                // Add it to the bottom-center of the cvProfile CardView
+                val params = FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                    bottomMargin = (16 * resources.displayMetrics.density).toInt() // converting to pixels for better rendering
+                }
+
+                cvProfile.addView(tvStreak, params)
+            }
+
+            // Set the streak text
+            tvStreak.text = streakText
+
+        } else if (cvProfile is TextView) {
+            // Just in case cvProfile is actually a TextView itself
+            cvProfile.text = streakText
+            cvProfile.setTextColor(Color.parseColor("#4CAF50")) // Green
+            cvProfile.setTypeface(null, Typeface.BOLD)
+            cvProfile.textSize = 32f // Big letters
+        }
+    }
+
     private fun fetchAllTracks() {
         db.collectionGroup("tracks")
             .addSnapshotListener { snapshot, error ->
                 if (error != null || snapshot == null) return@addSnapshotListener
-
-                val allTracks = snapshot.documents.mapNotNull {
-                    it.toObject(MeditationTrack::class.java)
-                }
-
-                if (allTracks.isNotEmpty()) {
-                    currentTrackList = allTracks.shuffled() // Shuffle for randomized playlist
-                }
+                val allTracks = snapshot.documents.mapNotNull { it.toObject(MeditationTrack::class.java) }
+                if (allTracks.isNotEmpty()) currentTrackList = allTracks.shuffled()
             }
     }
 
@@ -229,12 +306,53 @@ class WellnessFragment : Fragment() {
         }
     }
 
-    // 🔥 INSTANT USER DATA via addSnapshotListener
+    private fun fetchTodayWaterTotal() {
+        val user = auth.currentUser ?: return
+        val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        db.collection("users").document(user.uid).collection("wellness_data")
+            .whereEqualTo("date", todayStr)
+            .whereEqualTo("type", "water")
+            .addSnapshotListener { snapshot, _ ->
+                if (_binding == null) return@addSnapshotListener
+                var totalMl = 0
+                snapshot?.documents?.forEach { totalMl += it.getLong("amountMl")?.toInt() ?: 0 }
+                binding.tvWater.text = String.format(Locale.getDefault(), "%.1f", totalMl / 1000f)
+            }
+    }
+
+    private fun fetchTodayMood() {
+        val user = auth.currentUser ?: return
+        val todayStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        db.collection("users").document(user.uid).collection("wellness_data")
+            .whereEqualTo("date", todayStr)
+            .whereEqualTo("type", "mood")
+            .addSnapshotListener { snapshot, _ ->
+                if (_binding == null) return@addSnapshotListener
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val latestEntry = snapshot.documents.maxByOrNull { it.getLong("timestamp") ?: 0L }
+                    val mood = latestEntry?.getString("mood") ?: "-"
+                    val emoji = when(mood) {
+                        "Excited" -> "🤩"
+                        "Happy" -> "😊"
+                        "Calm" -> "😌"
+                        "Tired" -> "😴"
+                        "Sad" -> "😔"
+                        "Angry" -> "😠"
+                        else -> "-"
+                    }
+                    binding.tvMood.text = emoji
+                }
+            }
+    }
+
     private fun fetchUserData() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             db.collection("users").document(currentUser.uid)
                 .addSnapshotListener { document, error ->
+                    if (_binding == null) return@addSnapshotListener
                     if (error != null || document == null || !document.exists()) {
                         binding.tvGreetingName.text = "New User"
                         return@addSnapshotListener
@@ -244,7 +362,7 @@ class WellnessFragment : Fragment() {
                     binding.tvGreetingName.text = firstName
                 }
         } else {
-            binding.tvGreetingName.text = "Guest"
+            if (_binding != null) binding.tvGreetingName.text = "Guest"
         }
     }
 
@@ -254,12 +372,15 @@ class WellnessFragment : Fragment() {
             val client = HealthConnectClient.getOrCreate(requireContext())
             viewLifecycleOwner.lifecycleScope.launch {
                 val granted = client.permissionController.getGrantedPermissions()
+                if (_binding == null) return@launch
                 if (granted.containsAll(healthPermissions)) {
                     binding.cvConnectHealth.visibility = View.GONE
                     fetchHealthConnectData()
                 } else binding.cvConnectHealth.visibility = View.VISIBLE
             }
-        } else binding.cvConnectHealth.visibility = View.VISIBLE
+        } else {
+            if (_binding != null) binding.cvConnectHealth.visibility = View.VISIBLE
+        }
     }
 
     private fun launchHealthConnectPermissions() {
@@ -286,11 +407,13 @@ class WellnessFragment : Fragment() {
                 val caloriesKcal = (todaySteps * 0.04)
                 val activeMins = (todaySteps / 100).toInt()
 
-                requireActivity().runOnUiThread {
+                val currentActivity = activity ?: return@launch
+                currentActivity.runOnUiThread {
+                    if (_binding == null) return@runOnUiThread
                     binding.tvStepsCount.text = String.format("%,d", todaySteps)
                     binding.pbSteps.progress = progress.coerceAtMost(100)
-                    binding.tvDistance.text = String.format("%.1f", distanceKm)
-                    binding.tvCalories.text = String.format("%.1f", caloriesKcal)
+                    binding.tvDistance.text = String.format(Locale.US, "%.1f", distanceKm)
+                    binding.tvCalories.text = String.format(Locale.US, "%.1f", caloriesKcal)
                     binding.tvActiveMins.text = activeMins.toString()
                     binding.tvHeartRate.text = if (avgHr > 0L) avgHr.toString() else "--"
                 }
@@ -311,6 +434,14 @@ class WellnessFragment : Fragment() {
         params?.gravity = Gravity.BOTTOM
         dialog.window?.attributes = params
         dialog.window?.setWindowAnimations(android.R.style.Animation_Dialog)
+
+        // Dark/Light Mode Adaptability
+        val isNightMode = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        val bgColor = if (isNightMode) Color.parseColor("#121212") else Color.WHITE
+        val textColor = if (isNightMode) Color.WHITE else Color.parseColor("#212121")
+        val subTextColor = if (isNightMode) Color.parseColor("#9E9E9E") else Color.parseColor("#757575")
+        val primaryGreen = Color.parseColor("#4CAF50")
+        val highlightColor = if (isNightMode) Color.parseColor("#81C784") else Color.parseColor("#2E7D32")
 
         val tvDateRange = dialog.findViewById<TextView>(R.id.tvDateRange)
         val tvTotalSteps = dialog.findViewById<TextView>(R.id.tvTotalSteps)
@@ -336,7 +467,22 @@ class WellnessFragment : Fragment() {
         val dayBarsContainer = dialog.findViewById<LinearLayout>(R.id.dayBarsContainer)
         val monthGridContainer = dialog.findViewById<GridLayout>(R.id.monthGridContainer)
 
-        // EXPLICITLY specify the array type as <View?> and <TextView?>
+        // Set Dynamic Dialog Background
+        val rootGroup = dialog.findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0)
+        rootGroup?.background = GradientDrawable().apply {
+            setColor(bgColor)
+            cornerRadii = floatArrayOf(60f, 60f, 60f, 60f, 0f, 0f, 0f, 0f)
+        }
+
+        tvDateRange?.setTextColor(textColor)
+        tvTotalSteps?.setTextColor(textColor)
+        btnPrev?.setColorFilter(textColor)
+        btnNext?.setColorFilter(textColor)
+
+        viewTabDayLine?.setBackgroundColor(primaryGreen)
+        viewTabWeekLine?.setBackgroundColor(primaryGreen)
+        viewTabMonthLine?.setBackgroundColor(primaryGreen)
+
         val bars = arrayOf<View?>(
             dialog.findViewById(R.id.dlgBar1), dialog.findViewById(R.id.dlgBar2), dialog.findViewById(R.id.dlgBar3),
             dialog.findViewById(R.id.dlgBar4), dialog.findViewById(R.id.dlgBar5), dialog.findViewById(R.id.dlgBar6), dialog.findViewById(R.id.dlgBar7)
@@ -354,22 +500,25 @@ class WellnessFragment : Fragment() {
         var dateOffset = 0
 
         fun updateTabUI() {
-            tvTabDay.setTextColor(Color.parseColor("#888888")); tvTabDay.typeface = android.graphics.Typeface.DEFAULT
-            tvTabWeek.setTextColor(Color.parseColor("#888888")); tvTabWeek.typeface = android.graphics.Typeface.DEFAULT
-            tvTabMonth.setTextColor(Color.parseColor("#888888")); tvTabMonth.typeface = android.graphics.Typeface.DEFAULT
+            tvTabDay?.setTextColor(subTextColor)
+            tvTabDay?.typeface = android.graphics.Typeface.DEFAULT
+            tvTabWeek?.setTextColor(subTextColor)
+            tvTabWeek?.typeface = android.graphics.Typeface.DEFAULT
+            tvTabMonth?.setTextColor(subTextColor)
+            tvTabMonth?.typeface = android.graphics.Typeface.DEFAULT
 
-            viewTabDayLine.visibility = View.INVISIBLE
-            viewTabWeekLine.visibility = View.INVISIBLE
-            viewTabMonthLine.visibility = View.INVISIBLE
+            viewTabDayLine?.visibility = View.INVISIBLE
+            viewTabWeekLine?.visibility = View.INVISIBLE
+            viewTabMonthLine?.visibility = View.INVISIBLE
 
-            layoutDayChart.visibility = View.GONE
-            layoutWeekChart.visibility = View.GONE
-            layoutMonthChart.visibility = View.GONE
+            layoutDayChart?.visibility = View.GONE
+            layoutWeekChart?.visibility = View.GONE
+            layoutMonthChart?.visibility = View.GONE
 
             when (currentMode) {
-                0 -> { tvTabDay.setTextColor(Color.WHITE); tvTabDay.typeface = android.graphics.Typeface.DEFAULT_BOLD; viewTabDayLine.visibility = View.VISIBLE; layoutDayChart.visibility = View.VISIBLE }
-                1 -> { tvTabWeek.setTextColor(Color.WHITE); tvTabWeek.typeface = android.graphics.Typeface.DEFAULT_BOLD; viewTabWeekLine.visibility = View.VISIBLE; layoutWeekChart.visibility = View.VISIBLE }
-                2 -> { tvTabMonth.setTextColor(Color.WHITE); tvTabMonth.typeface = android.graphics.Typeface.DEFAULT_BOLD; viewTabMonthLine.visibility = View.VISIBLE; layoutMonthChart.visibility = View.VISIBLE }
+                0 -> { tvTabDay?.setTextColor(textColor); tvTabDay?.typeface = android.graphics.Typeface.DEFAULT_BOLD; viewTabDayLine?.visibility = View.VISIBLE; layoutDayChart?.visibility = View.VISIBLE }
+                1 -> { tvTabWeek?.setTextColor(textColor); tvTabWeek?.typeface = android.graphics.Typeface.DEFAULT_BOLD; viewTabWeekLine?.visibility = View.VISIBLE; layoutWeekChart?.visibility = View.VISIBLE }
+                2 -> { tvTabMonth?.setTextColor(textColor); tvTabMonth?.typeface = android.graphics.Typeface.DEFAULT_BOLD; viewTabMonthLine?.visibility = View.VISIBLE; layoutMonthChart?.visibility = View.VISIBLE }
             }
         }
 
@@ -397,16 +546,20 @@ class WellnessFragment : Fragment() {
                         totalDailySteps += steps
                     }
 
-                    requireActivity().runOnUiThread {
-                        tvDateRange.text = dateText
-                        tvTotalSteps.text = String.format("%,d steps", totalDailySteps)
+                    val currentActivity = activity ?: return@launch
+                    currentActivity.runOnUiThread {
+                        tvDateRange?.text = dateText
+                        tvTotalSteps?.text = String.format("%,d steps", totalDailySteps)
 
-                        dayBarsContainer.removeAllViews()
-                        val maxSteps = hourlySteps.maxOrNull()?.coerceAtLeast(500L) ?: 1000L
+                        dayBarsContainer?.removeAllViews()
+
+                        val maxSteps = hourlySteps.maxOrNull()?.coerceAtLeast(10L) ?: 10L
+                        val isToday = targetDay.toLocalDate() == LocalDateTime.now().toLocalDate()
+                        val currentHourIndex = LocalDateTime.now().hour
 
                         for (i in 0..23) {
                             val stepCount = hourlySteps[i]
-                            val weightBar = ((stepCount.toFloat() / maxSteps.toFloat()) * 100f).coerceIn(2f, 100f)
+                            val weightBar = (stepCount.toFloat() / maxSteps.toFloat() * 100f).coerceIn(0f, 100f)
                             val weightSpace = 100f - weightBar
 
                             val container = LinearLayout(requireContext()).apply {
@@ -414,20 +567,37 @@ class WellnessFragment : Fragment() {
                                 orientation = LinearLayout.VERTICAL
                             }
 
-                            val space = View(requireContext()).apply { layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weightSpace) }
+                            val space = View(requireContext()).apply { layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weightSpace.coerceAtLeast(0.01f)) }
+
+                            val readingText = TextView(requireContext()).apply {
+                                text = if (stepCount > 0) stepCount.toString() else ""
+                                textSize = 6f
+                                setTextColor(subTextColor)
+                                gravity = Gravity.CENTER
+                                layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                            }
 
                             val bar = MaterialCardView(requireContext()).apply {
-                                val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weightBar)
+                                val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, weightBar.coerceAtLeast(0.01f))
                                 lp.setMargins(2, 0, 2, 0)
                                 layoutParams = lp
-                                setCardBackgroundColor(Color.parseColor("#64B5F6"))
+                                setCardBackgroundColor(primaryGreen)
                                 radius = 4f
                                 cardElevation = 0f
+
+                                // Highlight Current Hour if Today
+                                if (isToday && i == currentHourIndex) {
+                                    strokeWidth = 4
+                                    strokeColor = highlightColor
+                                } else {
+                                    strokeWidth = 0
+                                }
                             }
 
                             container.addView(space)
+                            container.addView(readingText)
                             container.addView(bar)
-                            dayBarsContainer.addView(container)
+                            dayBarsContainer?.addView(container)
                         }
                     }
                 } catch (e: Exception) { Log.e("WellnessFragment", "Error loading Day Data", e) }
@@ -438,8 +608,12 @@ class WellnessFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     val client = HealthConnectClient.getOrCreate(requireContext())
-                    val endDay = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).minusWeeks(dateOffset.toLong())
-                    val startDay = endDay.minusDays(6)
+                    val now = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)
+
+                    // Fixed Calendar Week Logic: Explicitly map Mon-Sun
+                    val targetWeekDate = now.minusWeeks(dateOffset.toLong())
+                    val startDay = targetWeekDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+                    val endDay = startDay.plusDays(6)
 
                     val formatter = DateTimeFormatter.ofPattern("d MMM")
                     val dateText = "${startDay.format(formatter)} – ${endDay.format(formatter)}"
@@ -460,36 +634,54 @@ class WellnessFragment : Fragment() {
                         val steps = response[StepsRecord.COUNT_TOTAL] ?: 0L
                         dailySteps.add(steps)
                         totalWeeklySteps += steps
-
-                        requireActivity().runOnUiThread {
-                            // Safe call (?.) required since labels[i] is nullable
-                            labels[i]?.text = currentDay.dayOfWeek.name.take(3)
-                        }
                     }
 
-                    requireActivity().runOnUiThread {
+                    val currentActivity = activity ?: return@launch
+                    currentActivity.runOnUiThread {
                         tvDateRange?.text = dateText
                         tvTotalSteps?.text = String.format("%,d steps", totalWeeklySteps)
 
-                        val maxSteps = dailySteps.maxOrNull()?.coerceAtLeast(1000L) ?: 10000L
+                        val maxSteps = dailySteps.maxOrNull()?.coerceAtLeast(10L) ?: 10L
 
                         for (i in 0..6) {
                             val stepCount = dailySteps[i]
-                            val weightBar = ((stepCount.toFloat() / maxSteps.toFloat()) * 100f).coerceIn(2f, 100f)
+                            val weightBar = (stepCount.toFloat() / maxSteps.toFloat() * 100f).coerceIn(0f, 100f)
                             val weightSpace = 100f - weightBar
 
-                            // Safe layout param extraction and assignment
                             val spaceParams = spaces[i]?.layoutParams as? LinearLayout.LayoutParams
                             if (spaceParams != null) {
-                                spaceParams.weight = weightSpace
+                                spaceParams.weight = weightSpace.coerceAtLeast(0.01f)
                                 spaces[i]?.layoutParams = spaceParams
                             }
 
                             val barParams = bars[i]?.layoutParams as? LinearLayout.LayoutParams
                             if (barParams != null) {
-                                barParams.weight = weightBar
+                                barParams.weight = weightBar.coerceAtLeast(0.01f)
                                 bars[i]?.layoutParams = barParams
                             }
+
+                            val currentDay = startDay.plusDays(i.toLong())
+                            val isToday = currentDay.toLocalDate() == LocalDateTime.now().toLocalDate()
+
+                            val barCard = bars[i] as? MaterialCardView
+                            barCard?.setCardBackgroundColor(primaryGreen)
+
+                            // True Today Highlighting Logic
+                            if (isToday) {
+                                barCard?.strokeWidth = 4
+                                barCard?.strokeColor = highlightColor
+                            } else {
+                                barCard?.strokeWidth = 0
+                            }
+
+                            val dayName = currentDay.dayOfWeek.name.take(3)
+                            val readingStr = if (stepCount >= 1000) String.format(Locale.getDefault(), "%.1fk", stepCount / 1000f) else if (stepCount > 0) stepCount.toString() else ""
+
+                            labels[i]?.text = "$dayName\n$readingStr"
+                            labels[i]?.textSize = 10f
+                            labels[i]?.gravity = Gravity.CENTER
+                            labels[i]?.setTextColor(if (isToday) highlightColor else subTextColor)
+                            labels[i]?.typeface = if (isToday) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
                         }
                     }
                 } catch (e: Exception) {
@@ -502,7 +694,7 @@ class WellnessFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     val client = HealthConnectClient.getOrCreate(requireContext())
-                    val targetMonthStart = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).minusMonths(dateOffset.toLong()).withDayOfMonth(1)
+                    val targetMonthStart = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).withDayOfMonth(1).minusMonths(dateOffset.toLong())
                     val targetMonthEnd = targetMonthStart.plusMonths(1).minusDays(1)
 
                     val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
@@ -526,12 +718,14 @@ class WellnessFragment : Fragment() {
                         totalMonthSteps += steps
                     }
 
-                    requireActivity().runOnUiThread {
-                        tvDateRange.text = dateText
-                        tvTotalSteps.text = String.format("%,d steps", totalMonthSteps)
+                    val currentActivity = activity ?: return@launch
+                    currentActivity.runOnUiThread {
+                        tvDateRange?.text = dateText
+                        tvTotalSteps?.text = String.format("%,d steps", totalMonthSteps)
 
-                        monthGridContainer.removeAllViews()
-                        val maxSteps = dailyStepsMap.values.maxOrNull()?.coerceAtLeast(1000L) ?: 10000L
+                        monthGridContainer?.removeAllViews()
+
+                        val maxSteps = dailyStepsMap.values.maxOrNull()?.coerceAtLeast(10L) ?: 10L
 
                         val density = resources.displayMetrics.density
                         val maxBubbleSize = 55 * density
@@ -539,14 +733,20 @@ class WellnessFragment : Fragment() {
 
                         for (day in 1..targetMonthStart.toLocalDate().lengthOfMonth()) {
                             val steps = dailyStepsMap[day] ?: 0L
-                            val ratio = (steps.toFloat() / maxSteps.toFloat()).coerceIn(0.1f, 1f)
+                            val ratio = (steps.toFloat() / maxSteps.toFloat()).coerceIn(0f, 1f)
                             val bubbleSize = (minBubbleSize + (maxBubbleSize - minBubbleSize) * ratio).toInt()
 
+                            val currentDay = targetMonthStart.plusDays((day - 1).toLong())
+                            val isToday = currentDay.toLocalDate() == LocalDateTime.now().toLocalDate()
+
+                            val stepStr = if (steps >= 1000) "${steps/1000}k" else if (steps > 0) steps.toString() else ""
+
                             val bubbleView = TextView(requireContext()).apply {
-                                text = day.toString()
+                                text = if (steps > 0) "$day\n$stepStr" else day.toString()
                                 gravity = Gravity.CENTER
-                                setTextColor(Color.WHITE)
-                                textSize = 12f
+                                setTextColor(if (isToday) highlightColor else (if (isNightMode) Color.WHITE else Color.WHITE))
+                                typeface = if (isToday) android.graphics.Typeface.DEFAULT_BOLD else android.graphics.Typeface.DEFAULT
+                                textSize = if (steps > 0) 10f else 12f
 
                                 val lp = GridLayout.LayoutParams()
                                 lp.width = bubbleSize
@@ -557,10 +757,15 @@ class WellnessFragment : Fragment() {
 
                                 val bgShape = GradientDrawable()
                                 bgShape.shape = GradientDrawable.OVAL
-                                bgShape.setColor(Color.parseColor("#B364B5F6"))
+                                bgShape.setColor(if (isNightMode) Color.parseColor("#4D4CAF50") else Color.parseColor("#B34CAF50"))
+
+                                // True Today Highlighting Logic
+                                if (isToday) {
+                                    bgShape.setStroke(4, highlightColor)
+                                }
                                 background = bgShape
                             }
-                            monthGridContainer.addView(bubbleView)
+                            monthGridContainer?.addView(bubbleView)
                         }
                     }
                 } catch (e: Exception) {
@@ -577,11 +782,11 @@ class WellnessFragment : Fragment() {
             }
         }
 
-        tabDay.setOnClickListener { if (currentMode != 0) { currentMode = 0; dateOffset = 0; updateTabUI(); loadDataForCurrentMode() } }
-        tabWeek.setOnClickListener { if (currentMode != 1) { currentMode = 1; dateOffset = 0; updateTabUI(); loadDataForCurrentMode() } }
-        tabMonth.setOnClickListener { if (currentMode != 2) { currentMode = 2; dateOffset = 0; updateTabUI(); loadDataForCurrentMode() } }
-        btnPrev.setOnClickListener { dateOffset++; loadDataForCurrentMode() }
-        btnNext.setOnClickListener { if (dateOffset > 0) { dateOffset--; loadDataForCurrentMode() } }
+        tabDay?.setOnClickListener { if (currentMode != 0) { currentMode = 0; dateOffset = 0; updateTabUI(); loadDataForCurrentMode() } }
+        tabWeek?.setOnClickListener { if (currentMode != 1) { currentMode = 1; dateOffset = 0; updateTabUI(); loadDataForCurrentMode() } }
+        tabMonth?.setOnClickListener { if (currentMode != 2) { currentMode = 2; dateOffset = 0; updateTabUI(); loadDataForCurrentMode() } }
+        btnPrev?.setOnClickListener { dateOffset++; loadDataForCurrentMode() }
+        btnNext?.setOnClickListener { if (dateOffset > 0) { dateOffset--; loadDataForCurrentMode() } }
 
         updateTabUI()
         loadDataForCurrentMode()

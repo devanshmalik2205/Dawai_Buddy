@@ -1,14 +1,14 @@
 package com.ebookfrenzy.dawaibuddy.adapters
 
-import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ebookfrenzy.dawaibuddy.objects.FlashDeal
-import com.ebookfrenzy.dawaibuddy.ProductListActivity
 import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.ItemFlashDealBinding
 
@@ -56,18 +56,18 @@ class FlashDealAdapter(private val flashDeals: List<FlashDeal>) :
             binding.ivFlashDealBg.setImageResource(R.drawable.promotion_1)
         }
 
-        // Handle the "Shop Now" button click with filter logic
-        binding.btnShopNow.setOnClickListener {
-            val intent = Intent(it.context, ProductListActivity::class.java)
+        // Handle the "Shop Now" button click with Jetpack Navigation
+        binding.btnShopNow.setOnClickListener { view ->
+            val bundle = Bundle().apply {
+                // Pass the filtering data from Firebase to the Product List page
+                putString("FILTER_TYPE", deal.filterType)
+                putString("FILTER_VALUE", deal.filterValue)
 
-            // Pass the filtering data from Firebase to the Product List page
-            intent.putExtra("FILTER_TYPE", deal.filterType)
-            intent.putExtra("FILTER_VALUE", deal.filterValue)
+                // Use the deal title as the page header (e.g., "Himalaya Mega Sale")
+                putString("CATEGORY_NAME", deal.title)
+            }
 
-            // Use the deal title as the page header (e.g., "Himalaya Mega Sale")
-            intent.putExtra("CATEGORY_NAME", deal.title)
-
-            it.context.startActivity(intent)
+            view.findNavController().navigate(R.id.productListFragment, bundle)
         }
     }
 

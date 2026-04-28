@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.ebookfrenzy.dawaibuddy.HomeActivity
+import com.ebookfrenzy.dawaibuddy.host_activities.HomeActivity
 import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentOtpFragmentBinding
 import com.google.firebase.auth.FirebaseAuth

@@ -1,13 +1,13 @@
 package com.ebookfrenzy.dawaibuddy.adapters
 
-import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ebookfrenzy.dawaibuddy.ProductListActivity
 import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.ItemCategoryBinding
 import com.ebookfrenzy.dawaibuddy.objects.Category
@@ -29,7 +29,6 @@ class CategoryAdapter(private val categoryList: List<Category>) :
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categoryList[position]
-
         val binding = holder.binding
 
         // TEXT
@@ -53,13 +52,16 @@ class CategoryAdapter(private val categoryList: List<Category>) :
             binding.ivCategoryIcon.setImageResource(R.drawable.image_icon) // optional fallback
         }
 
-        // Handle Item Click to open the Products List Activity
-        holder.itemView.setOnClickListener {
-            val intent = Intent(it.context, ProductListActivity::class.java)
-            // Replace 'title' with 'id' if your Category class has a unique ID field
-            intent.putExtra("CATEGORY_ID", category.title)
-            intent.putExtra("CATEGORY_NAME", category.title)
-            it.context.startActivity(intent)
+        // Handle Item Click to navigate to the Product List Fragment using Jetpack Navigation
+        holder.itemView.setOnClickListener { view ->
+            val bundle = Bundle().apply {
+                // Replace 'title' with 'id' if your Category class has a unique ID field
+                putString("CATEGORY_ID", category.title)
+                putString("CATEGORY_NAME", category.title)
+            }
+
+            // Assuming your destination ID in nav_graph.xml is 'productListFragment'
+            view.findNavController().navigate(R.id.productListFragment, bundle)
         }
     }
 

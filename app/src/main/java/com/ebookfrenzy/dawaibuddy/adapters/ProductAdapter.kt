@@ -1,21 +1,26 @@
 package com.ebookfrenzy.dawaibuddy.adapters
 
-import android.content.Intent
-import android.graphics.Paint
+import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ebookfrenzy.dawaibuddy.ProductDetailActivity
 import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.ItemProductBinding
+import com.ebookfrenzy.dawaibuddy.objects.CartItem
+import com.ebookfrenzy.dawaibuddy.models.SharedCartViewModel
 import com.ebookfrenzy.dawaibuddy.objects.Product
 
-class ProductAdapter(private val productList: List<Product>) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(
+    private val productList: List<Product>,
+    private val cartViewModel: SharedCartViewModel,
+    private val lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-    class ProductViewHolder(val binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ProductViewHolder(val binding: ItemProductBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,35 +29,48 @@ class ProductAdapter(private val productList: List<Product>) :
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = productList[position]
+        val binding = holder.binding
 
-        holder.binding.tvProductName.text = product.name
-        holder.binding.tvProductVolume.text = product.volume
-        holder.binding.tvPrice.text = "₹${product.price}"
-
-        // Strikethrough for MRP
-        holder.binding.tvMRP.text = "MRP ₹${product.mrp}"
-        holder.binding.tvMRP.paintFlags = holder.binding.tvMRP.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-
-        if (product.discountPercent > 0) {
-            holder.binding.tvDiscountTag.visibility = View.VISIBLE
-            holder.binding.tvDiscountTag.text = "${product.discountPercent}% OFF"
-        } else {
-            holder.binding.tvDiscountTag.visibility = View.GONE
-            holder.binding.tvMRP.visibility = View.GONE
-        }
+        binding.tvProductName.text = product.name
+        binding.tvProductVolume.text = product.volume
+        binding.tvPrice.text = "₹${product.price.toInt()}"
 
         Glide.with(holder.itemView.context)
-            .load(product.imageUrl)
-            .placeholder(R.drawable.health) // Fallback image
-            .into(holder.binding.ivProductImage)
+            .load(product.imageUrl.takeIf { it.isNotBlank() } ?: R.drawable.health)
+            .into(binding.ivProductImage)
 
-        // Handle Item Click to open Details Activity
-        holder.itemView.setOnClickListener {
-            val intent = Intent(it.context, ProductDetailActivity::class.java)
-            intent.putExtra("PRODUCT_ID", product.id)
-            it.context.startActivity(intent)
+        // NAVIGATION: Click anywhere on the card to open Details
+        holder.itemView.setOnClickListener { view ->
+            val bundle = Bundle().apply {
+                putString("PRODUCT_ID", product.id)
+            }
+            view.findNavController().navigate(R.id.productDetailFragment, bundle)
         }
+
+        // CART LOGIC
+        val cartItem = CartItem(
+            id = product.id,
+            name = product.name,
+            price = product.price,
+            volume = product.volume,
+            imageUrl = product.imageUrl,
+            quantity = 1
+        )
+
+        cartViewModel.cartItems.observe(lifecycleOwner) { cartMap ->
+            val quantity = cartMap[product.id]?.quantity ?: 0
+            if (quantity > 0) {
+                binding.vsAddController.displayedChild = 1
+                binding.tvQuantity.text = quantity.toString()
+            } else {
+                binding.vsAddController.displayedChild = 0
+            }
+        }
+
+        binding.tvAddBtn.setOnClickListener { cartViewModel.updateQuantity(cartItem, 1) }
+        binding.tvPlus.setOnClickListener { cartViewModel.updateQuantity(cartItem, 1) }
+        binding.tvMinus.setOnClickListener { cartViewModel.updateQuantity(cartItem, -1) }
     }
 
-    override fun getItemCount() = productList.size
+    override fun getItemCount(): Int = productList.size
 }

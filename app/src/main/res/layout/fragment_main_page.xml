@@ -16,7 +16,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:paddingBottom="100dp"> <!-- Added padding for floating cart -->
 
             <!-- Top App Bar Area -->
             <ImageView
@@ -69,30 +70,6 @@
                 app:layout_constraintStart_toEndOf="@id/tvLocation"
                 app:layout_constraintTop_toTopOf="@id/tvLocation" />
 
-            <!-- Notification Bell -->
-            <ImageView
-                android:id="@+id/ivNotification"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/notifications"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/ivProfilePic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ivProfilePic"
-                tools:ignore="ContentDescription" />
-
-            <!-- Shifted Cart Button -->
-            <ImageView
-                android:id="@+id/ivCart"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="12dp"
-                android:background="@drawable/shopping_cart"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/ivProfilePic"
-                app:layout_constraintEnd_toStartOf="@id/ivNotification"
-                app:layout_constraintTop_toTopOf="@id/ivProfilePic"
-                tools:ignore="ContentDescription" />
 
             <!-- Search Bar -->
             <EditText
@@ -127,10 +104,14 @@
 
                 <!-- Health -->
                 <LinearLayout
+                    android:id="@+id/llHealthQuickLink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="60dp"
@@ -150,10 +131,14 @@
 
                 <!-- Mood -->
                 <LinearLayout
+                    android:id="@+id/llMoodQuickLink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="60dp"
@@ -173,10 +158,14 @@
 
                 <!-- Meditate -->
                 <LinearLayout
+                    android:id="@+id/llMeditateQuickLink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="60dp"
@@ -196,10 +185,14 @@
 
                 <!-- Water -->
                 <LinearLayout
+                    android:id="@+id/llWaterQuickLink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="60dp"
@@ -240,17 +233,6 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/vpFlashDeals" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="See All"
-                android:textColor="#438BFF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tvCategoryHeader"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvCategoryHeader" />
 
             <!-- Category Grid Section -->
             <androidx.recyclerview.widget.RecyclerView
@@ -297,7 +279,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@color/white">
 
                     <TextView
                         android:id="@+id/tvMindfulnessTitle"
@@ -305,7 +288,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:text="Tap to play music"
-                        android:textColor="#212121"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/cvMindfulnessArt"
@@ -319,7 +302,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:text="Start a random meditation"
-                        android:textColor="#757575"
+                        android:textColor="@color/subtext_fade"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toStartOf="@id/cvMindfulnessArt"
                         app:layout_constraintStart_toStartOf="parent"
@@ -342,7 +325,7 @@
                             android:layout_height="36dp"
                             android:padding="6dp"
                             android:src="@android:drawable/ic_media_previous"
-                            app:tint="#424242"
+                            app:tint="@color/subtext_fade"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"/>
@@ -364,7 +347,7 @@
                                 android:layout_height="match_parent"
                                 android:padding="12dp"
                                 android:src="@android:drawable/ic_media_play"
-                                app:tint="#FFFFFF" />
+                                app:tint="@color/white" />
                         </com.google.android.material.card.MaterialCardView>
 
                         <ImageView
@@ -373,7 +356,7 @@
                             android:layout_height="36dp"
                             android:padding="6dp"
                             android:src="@android:drawable/ic_media_next"
-                            app:tint="#424242"
+                            app:tint="@color/subtext_fade"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"/>
@@ -404,7 +387,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:progressTint="#4CAF50"
+                        android:progressTint="@color/green_dark_light"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -415,4 +398,105 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Floating View Cart Banner (Blinkit Style) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvFloatingCart"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#388E3C"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp">
+
+            <!-- Stacked Images mimicking Cart Products -->
+            <FrameLayout
+                android:id="@+id/flCartImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <!-- Third Image -->
+                <ImageView
+                    android:id="@+id/ivCartImg3"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/bg_search"
+                    android:padding="2dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <!-- Second Image -->
+                <ImageView
+                    android:id="@+id/ivCartImg2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/bg_search"
+                    android:padding="2dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <!-- First Image -->
+                <ImageView
+                    android:id="@+id/ivCartImg1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_search"
+                    android:padding="2dp"
+                    android:scaleType="centerCrop" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@id/flCartImages"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View cart"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFloatingCartItems"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 items"
+                    android:textColor="#E0E0E0"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_next"
+                app:tint="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

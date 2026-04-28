@@ -68,9 +68,8 @@
                 android:id="@+id/cvPlay"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="28dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -79,7 +78,7 @@
                     android:layout_height="match_parent"
                     android:padding="18dp"
                     android:src="@android:drawable/ic_media_play"
-                    app:tint="#4285F4" />
+                    app:tint="@color/green_dark_light" />
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

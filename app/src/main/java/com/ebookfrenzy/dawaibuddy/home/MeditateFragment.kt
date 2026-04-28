@@ -1,6 +1,6 @@
 package com.ebookfrenzy.dawaibuddy.home
 
-import android.R
+import com.ebookfrenzy.dawaibuddy.R
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -23,6 +23,8 @@ import com.ebookfrenzy.dawaibuddy.adapters.SpecialMelodyAdapter
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentMeditateBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 
 class MeditateFragment : Fragment() {
 
@@ -75,6 +77,11 @@ class MeditateFragment : Fragment() {
 
         setupRecyclerView()
 
+        // Navigate to the unified search fragment
+        binding.btnSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_meditate_to_searchFragment)
+        }
+
         // Start the high-speed cached fetching
         loadDataInstantly()
 
@@ -94,10 +101,10 @@ class MeditateFragment : Fragment() {
 
         audioViewModel.isPlaying.observe(viewLifecycleOwner) { isPlaying ->
             if (isPlaying) {
-                binding.miniPlayerPlay.setImageResource(R.drawable.ic_media_pause)
+                binding.miniPlayerPlay.setImageResource(android.R.drawable.ic_media_pause)
                 handler.post(updateProgressAction)
             } else {
-                binding.miniPlayerPlay.setImageResource(R.drawable.ic_media_play)
+                binding.miniPlayerPlay.setImageResource(android.R.drawable.ic_media_play)
                 handler.removeCallbacks(updateProgressAction)
             }
         }
@@ -306,13 +313,16 @@ class MeditateCategoryAdapter(
         val category = categories[position]
         holder.tvName.text = category.name
 
-        // Style based on selected state
         if (position == selectedPosition) {
-            holder.tvName.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#2196F3"))
-            holder.tvName.setTextColor(Color.WHITE)
+            val blue = ContextCompat.getColor(holder.itemView.context, R.color.green_dark_light)
+            holder.tvName.backgroundTintList = ColorStateList.valueOf(blue)
+            holder.tvName.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
         } else {
-            holder.tvName.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-            holder.tvName.setTextColor(Color.parseColor("#555555"))
+            val white = ContextCompat.getColor(holder.itemView.context, R.color.white)
+            val gray = ContextCompat.getColor(holder.itemView.context, R.color.green_dark_light)
+
+            holder.tvName.backgroundTintList = ColorStateList.valueOf(white)
+            holder.tvName.setTextColor(gray)
         }
 
         // Handle Chip Selection

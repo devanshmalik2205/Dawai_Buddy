@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.host_activities
 
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +11,7 @@ import androidx.health.connect.client.records.StepsRecord
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.ActivityHomeBinding
 import kotlinx.coroutines.launch
 

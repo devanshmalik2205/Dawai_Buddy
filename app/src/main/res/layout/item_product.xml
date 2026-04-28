@@ -30,7 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Product Image -->
         <ImageView
             android:id="@+id/ivProductImage"
             android:layout_width="100dp"
@@ -42,7 +41,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvDiscountTag"
             tools:src="@drawable/image_icon" />
 
-        <!-- Product Name -->
         <TextView
             android:id="@+id/tvProductName"
             android:layout_width="0dp"
@@ -58,7 +56,6 @@
             app:layout_constraintTop_toBottomOf="@id/ivProductImage"
             tools:text="Vitaa in C 1000a g" />
 
-        <!-- Volume/Quantity -->
         <TextView
             android:id="@+id/tvProductVolume"
             android:layout_width="0dp"
@@ -71,7 +68,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvProductName"
             tools:text="Bottle of 30 Gummies" />
 
-        <!-- MRP Price (Strikethrough) -->
         <TextView
             android:id="@+id/tvMRP"
             android:layout_width="wrap_content"
@@ -83,7 +79,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvProductVolume"
             tools:text="$12.50" />
 
-        <!-- Actual Price -->
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
@@ -96,18 +91,68 @@
             app:layout_constraintTop_toBottomOf="@id/tvMRP"
             tools:text="$9.99" />
 
-        <!-- Add Button -->
-        <ImageView
-            android:id="@+id/btnAdd"
-            android:layout_width="32dp"
+        <!-- ViewSwitcher to handle ADD and Quantity Controller (- 1 +) dynamically -->
+        <ViewSwitcher
+            android:id="@+id/vsAddController"
+            android:layout_width="70dp"
             android:layout_height="32dp"
-            android:background="@drawable/bg_search"
-            android:backgroundTint="@color/green_dark_light"
-            android:padding="8dp"
-            android:src="@android:drawable/ic_input_add"
-            app:tint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- State 1: ADD Button -->
+            <TextView
+                android:id="@+id/tvAddBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_search"
+                android:backgroundTint="#FFF0E6"
+                android:textColor="#FF6D00"
+                android:gravity="center"
+                android:text="ADD"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- State 2: - 1 + Controller -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_search"
+                android:backgroundTint="#388E3C"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvMinus"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="-"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPlus"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </ViewSwitcher>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

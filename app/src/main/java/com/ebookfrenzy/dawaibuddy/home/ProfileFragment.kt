@@ -1,4 +1,4 @@
-package com.ebookfrenzy.dawaibuddy
+package com.ebookfrenzy.dawaibuddy.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.ebookfrenzy.dawaibuddy.host_activities.AuthActivity
+import com.ebookfrenzy.dawaibuddy.R
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentProfileBinding
 import com.ebookfrenzy.dawaibuddy.objects.User
 import com.google.firebase.auth.FirebaseAuth
@@ -35,16 +38,25 @@ class ProfileFragment : Fragment() {
         binding.tvGreeting.text = "Hi..."
         binding.tvProfileName.text = "Loading..."
 
+        // Initial Data Fetch
         fetchUserData()
+        fetchOrderCount()
 
         binding.ivBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // Logic to navigate to Order History
+        val navigateToHistory = View.OnClickListener {
+            findNavController().navigate(R.id.action_nav_profile_to_orderHistoryFragment)
+        }
+
+        binding.cvOrdersStat.setOnClickListener(navigateToHistory)
+        binding.llPrescriptionHistory.setOnClickListener(navigateToHistory)
+
         binding.llLogOut.setOnClickListener {
             auth.signOut()
             Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
-
             val intent = Intent(requireContext(), AuthActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -52,46 +64,55 @@ class ProfileFragment : Fragment() {
         }
 
         binding.llMyAddresses.setOnClickListener {
-            Toast.makeText(requireContext(), "Addresses Clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Addresses feature coming soon", Toast.LENGTH_SHORT).show()
         }
 
         binding.llPaymentMethods.setOnClickListener {
-            Toast.makeText(requireContext(), "Payments Clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Payments feature coming soon", Toast.LENGTH_SHORT).show()
         }
+    }
 
-        binding.llPrescriptionHistory.setOnClickListener {
-            Toast.makeText(requireContext(), "History Clicked", Toast.LENGTH_SHORT).show()
+    private fun fetchOrderCount() {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            db.collection("orders")
+                .whereEqualTo("userId", currentUser.uid)
+                .get()
+                .addOnSuccessListener { result ->
+                    val count = result.size()
+                    binding.tvOrderCount.text = count.toString()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ProfileFragment", "Error fetching order count", e)
+                    binding.tvOrderCount.text = "0"
+                }
         }
     }
 
     private fun fetchUserData() {
         val currentUser = auth.currentUser
-
         if (currentUser != null) {
             db.collection("users").document(currentUser.uid)
                 .get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val user = document.toObject(User::class.java)
-
                         if (user != null) {
                             updateUIWithUserData(user)
                         }
                     } else {
-                        Log.d("ProfileActivity", "No such document exists")
                         binding.tvGreeting.text = "Hi there"
-                        binding.tvProfileName.text = "New User"
+                        binding.tvProfileName.text = "User"
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.e("ProfileActivity", "Error fetching user data", exception)
-                    Toast.makeText(requireContext(), "Failed to load profile data", Toast.LENGTH_SHORT).show()
+                    Log.e("ProfileFragment", "Error fetching user data", exception)
                     binding.tvGreeting.text = "Hi"
-                    binding.tvProfileName.text = "Error loading name"
+                    binding.tvProfileName.text = "Error"
                 }
         } else {
-            Toast.makeText(requireContext(), "Please log in again", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(requireContext(), AuthActivity::class.java))
+            val intent = Intent(requireContext(), AuthActivity::class.java)
+            startActivity(intent)
             requireActivity().finish()
         }
     }
@@ -99,11 +120,9 @@ class ProfileFragment : Fragment() {
     private fun updateUIWithUserData(user: User) {
         val fullName = user.name.ifEmpty { "User" }
         val firstName = fullName.split(" ").firstOrNull() ?: "User"
-
         binding.tvGreeting.text = "Hi $firstName"
         binding.tvProfileName.text = fullName
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

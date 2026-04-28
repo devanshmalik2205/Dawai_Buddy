@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Hi Manasvi"
+                android:text="Hi..."
                 android:textColor="@color/black"
                 android:textSize="28sp"
                 android:textStyle="bold"
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Manasvi"
+                android:text="Loading..."
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -102,10 +102,14 @@
 
                 <!-- Orders Stat -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvOrdersStat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="#F2F7FF"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp">
@@ -119,7 +123,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/shopping_cart"
+                            android:src="@android:drawable/ic_menu_agenda"
                             app:tint="#4A81D4" />
 
                         <TextView
@@ -132,11 +136,12 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvOrderCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="12"
-                            android:textColor="#f000"
+                            android:text="0"
+                            android:textColor="#f111"
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -146,8 +151,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="#EEFFF5"
                     app:cardCornerRadius="12dp"
@@ -178,8 +182,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="85"
-                            android:textColor="#f000"
+                            android:text="--"
+                            android:textColor="#f111"
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -220,8 +224,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="5d"
-                            android:textColor="#f000"
+                            android:text="--"
+                            android:textColor="#f111"
                             android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -249,6 +253,9 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/tvSettingsHeader">
 
                 <androidx.cardview.widget.CardView
@@ -304,6 +311,9 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/llMyAddresses">
 
                 <androidx.cardview.widget.CardView
@@ -351,7 +361,7 @@
                     android:textStyle="bold"/>
             </LinearLayout>
 
-            <!-- Setting Item: Prescription History -->
+            <!-- Setting Item: Order History -->
             <LinearLayout
                 android:id="@+id/llPrescriptionHistory"
                 android:layout_width="match_parent"
@@ -359,6 +369,9 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/llPaymentMethods">
 
                 <androidx.cardview.widget.CardView
@@ -384,7 +397,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Prescription History"
+                        android:text="Order History"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -392,7 +405,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="View past uploads &amp; refills"
+                        android:text="View past purchases &amp; status"
                         android:textColor="@color/subtext_fade"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -415,6 +428,9 @@
                 android:layout_marginBottom="24dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llPrescriptionHistory">

@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -26,6 +27,7 @@ import com.ebookfrenzy.dawaibuddy.adapters.CategoryAdapter
 import com.ebookfrenzy.dawaibuddy.adapters.FlashDealAdapter
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentMainPageBinding
 import com.ebookfrenzy.dawaibuddy.models.SharedAudioViewModel
+import com.ebookfrenzy.dawaibuddy.models.SharedCartViewModel
 import com.ebookfrenzy.dawaibuddy.objects.Category
 import com.ebookfrenzy.dawaibuddy.objects.FlashDeal
 import com.ebookfrenzy.dawaibuddy.objects.MeditationTrack
@@ -45,6 +47,9 @@ class MainPageFragment : Fragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val db = FirebaseFirestore.getInstance()
+
+    // CONNECT TO SHARED CART VIEWMODEL
+    private val cartViewModel: SharedCartViewModel by activityViewModels()
 
     // CONNECT TO GLOBAL AUDIO
     private val audioViewModel: SharedAudioViewModel by activityViewModels()
@@ -111,14 +116,45 @@ class MainPageFragment : Fragment() {
 
         binding.tvLocation.setOnClickListener { openLocationPicker() }
 
-        setupRecyclerView()
+        binding.etSearch.isFocusable = false
+        binding.etSearch.isClickable = true
+        binding.etSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_searchFragment)
+        }
 
-        // 🔥 INSTANT FETCHING WITH SNAPSHOTS
+        setupRecyclerView()
         fetchCategories()
         fetchFlashDeals()
         fetchAllTracks()
-
         checkPermissionsAndFetchLocation()
+        setupCartObserver()
+
+        // --- NAVIGATION LINKS ---
+        binding.root.findViewById<View>(R.id.llHealthQuickLink)?.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_wellness)
+        }
+
+        binding.root.findViewById<View>(R.id.llMoodQuickLink)?.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_moodTrackerFragment)
+        }
+
+        binding.root.findViewById<View>(R.id.llWaterQuickLink)?.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_waterLoggerFragment)
+        }
+
+        binding.root.findViewById<View>(R.id.llMeditateQuickLink)?.setOnClickListener {
+            playRandomTrack()
+            if (currentTrackList.isNotEmpty()) {
+                NowPlayingFragment.currentTrackList = currentTrackList
+                val bottomSheet = NowPlayingFragment()
+                bottomSheet.show(parentFragmentManager, "NowPlaying")
+            }
+        }
+
+        // Navigation to checkout when floating cart is clicked
+        binding.cvFloatingCart.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_checkoutFragment)
+        }
 
         // --- BACKGROUND AUDIO SYNC & PROGRESS BAR ---
         progressHandler = Handler(Looper.getMainLooper())
@@ -215,39 +251,40 @@ class MainPageFragment : Fragment() {
         }
 
         // Click the whole Card -> Opens NowPlaying
-        binding.cvMindfulness.setOnClickListener {
+        binding.root.findViewById<View>(R.id.cvMindfulness)?.setOnClickListener {
             if (audioViewModel.currentTrack.value != null) {
                 val bottomSheet = NowPlayingFragment()
                 bottomSheet.show(parentFragmentManager, "NowPlaying")
             } else {
                 playRandomTrack()
+                if (currentTrackList.isNotEmpty()) {
+                    NowPlayingFragment.currentTrackList = currentTrackList
+                    val bottomSheet = NowPlayingFragment()
+                    bottomSheet.show(parentFragmentManager, "NowPlaying")
+                }
             }
         }
     }
 
-    // 🔥 FASTER FETCHING: Collection Group Query instantly grabs ALL tracks from ALL categories
-    private fun fetchAllTracks() {
-        db.collectionGroup("tracks")
-            .addSnapshotListener { snapshot, error ->
-                if (error != null || snapshot == null) return@addSnapshotListener
+    private fun setupCartObserver() {
+        cartViewModel.cartItems.observe(viewLifecycleOwner) { items ->
+            if (items.isEmpty()) {
+                binding.cvFloatingCart.visibility = View.GONE
+            } else {
+                binding.cvFloatingCart.visibility = View.VISIBLE
 
-                val allTracks = snapshot.documents.mapNotNull {
-                    it.toObject(MeditationTrack::class.java)
-                }
+                val totalItems = items.values.sumOf { it.quantity }
+                val uniqueItems = items.values.toList()
 
-                if (allTracks.isNotEmpty()) {
-                    currentTrackList = allTracks.shuffled() // Shuffle to make it a random playlist
-                }
+                binding.tvFloatingCartItems.text = "$totalItems item${if(totalItems > 1) "s" else ""}"
+
+                // Manage stacked images visually based on cart variety
+                binding.ivCartImg1.visibility = if (uniqueItems.isNotEmpty()) View.VISIBLE else View.GONE
+                binding.ivCartImg2.visibility = if (uniqueItems.size > 1) View.VISIBLE else View.GONE
+                binding.ivCartImg3.visibility = if (uniqueItems.size > 2) View.VISIBLE else View.GONE
+
+                // (Optional) You can load actual product thumbnails into ivCartImg using Glide/Picasso here.
             }
-    }
-
-    private fun playRandomTrack() {
-        if (currentTrackList.isNotEmpty()) {
-            val randomTrack = currentTrackList.random()
-            audioViewModel.playTrack(randomTrack)
-            Toast.makeText(requireContext(), "Playing ${randomTrack.title}", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireContext(), "Loading tracks, please wait...", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -268,26 +305,47 @@ class MainPageFragment : Fragment() {
         _binding = null
     }
 
+    private fun fetchAllTracks() {
+        db.collectionGroup("tracks")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null || snapshot == null) return@addSnapshotListener
+
+                val allTracks = snapshot.documents.mapNotNull {
+                    it.toObject(MeditationTrack::class.java)
+                }
+
+                if (allTracks.isNotEmpty()) {
+                    currentTrackList = allTracks.shuffled()
+                }
+            }
+    }
+
+    private fun playRandomTrack() {
+        if (currentTrackList.isNotEmpty()) {
+            val randomTrack = currentTrackList.random()
+            audioViewModel.playTrack(randomTrack)
+            Toast.makeText(requireContext(), "Playing ${randomTrack.title}", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Loading tracks, please wait...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun setupRecyclerView() {
         binding.rvCategories.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    // 🔥 INSTANT LOADING via addSnapshotListener
     private fun fetchCategories() {
         db.collection("categories").addSnapshotListener { snapshot, error ->
             if (error != null || snapshot == null || snapshot.isEmpty) return@addSnapshotListener
-
             val categoryList = mutableListOf<Category>()
             for (document in snapshot) categoryList.add(document.toObject(Category::class.java))
             binding.rvCategories.adapter = CategoryAdapter(categoryList)
         }
     }
 
-    // 🔥 INSTANT LOADING via addSnapshotListener
     private fun fetchFlashDeals() {
         db.collection("promotions").addSnapshotListener { snapshot, error ->
             if (error != null || snapshot == null || snapshot.isEmpty) return@addSnapshotListener
-
             val flashDeals = mutableListOf<FlashDeal>()
             for (document in snapshot) flashDeals.add(document.toObject(FlashDeal::class.java))
             setupViewPager(flashDeals)
