@@ -87,18 +87,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ivCart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/shopping_cart"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/green_vdark_vlight"
-            tools:ignore="ContentDescription" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Search Bar -->
