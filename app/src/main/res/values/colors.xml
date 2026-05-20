@@ -18,4 +18,13 @@
     <color name="background_2">#ffff</color>
 
     <color name="subtext_fade">#888888</color>
+
+    <color name="blue">#023e8a</color>
+    <color name="blue_text">#03045e</color>
+    <color name="blue_bg">#bde0fe</color>
+
+    <color name="purple">#560bad</color>
+    <color name="red_pink">#b5179e</color>
+    <color name="pink_bg">#ffcad4</color>
+    <color name="purple_bg">#cdb4db</color>
 </resources>

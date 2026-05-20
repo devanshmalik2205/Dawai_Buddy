@@ -118,7 +118,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- Mini Player Container -->
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/miniPlayerContainer"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -128,6 +128,8 @@
         app:cardBackgroundColor="#3F3140"
         app:cardCornerRadius="8dp"
         app:cardElevation="6dp"
+        app:strokeWidth="0dp"
+        app:strokeColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -221,6 +223,6 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

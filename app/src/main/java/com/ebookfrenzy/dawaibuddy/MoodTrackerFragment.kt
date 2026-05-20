@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import com.airbnb.lottie.LottieAnimationView
 import com.ebookfrenzy.dawaibuddy.databinding.FragmentMoodTrackerBinding
 import com.ebookfrenzy.dawaibuddy.objects.WellnessData
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,6 +32,13 @@ class MoodTrackerFragment : Fragment() {
 
     private var selectedMood: String = ""
 
+    // Data class to map the UI components to their respective Lottie Resources
+    private data class MoodOption(
+        val card: MaterialCardView,
+        val moodName: String,
+        val rawRes: Int
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +50,8 @@ class MoodTrackerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // HIDE THE BOTTOM NAVIGATION MENU
-        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        bottomNav?.visibility = View.GONE
+        // HIDE THE BOTTOM NAVIGATION MENU SAFELY
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigation)?.visibility = View.GONE
 
         binding.ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -62,22 +69,26 @@ class MoodTrackerFragment : Fragment() {
     }
 
     private fun setupMoodSelection() {
-        val moodCards = listOf(
-            binding.cvMoodExcited to "Excited",
-            binding.cvMoodHappy to "Happy",
-            binding.cvMoodCalm to "Calm",
-            binding.cvMoodTired to "Tired",
-            binding.cvMoodSad to "Sad",
-            binding.cvMoodAngry to "Angry"
+        val moodOptions = listOf(
+            MoodOption(binding.cvMoodHappy, "Happy", R.raw.smiley_emoji),
+            MoodOption(binding.cvMoodNeutral, "Neutral", R.raw.diagonal_mouth_emoji),
+            MoodOption(binding.cvMoodSad, "Sad", R.raw.yawn_emoji),
+            MoodOption(binding.cvMoodStressed, "Stressed", R.raw.angry_emoji)
         )
 
-        moodCards.forEach { (card, moodName) ->
-            card.setOnClickListener {
-                // Reset all strokes
-                moodCards.forEach { (c, _) -> c.strokeWidth = 0 }
-                // Highlight selected
-                card.strokeWidth = 4
-                selectedMood = moodName
+        moodOptions.forEach { option ->
+            option.card.setOnClickListener {
+                // Reset strokes for all cards
+                moodOptions.forEach { it.card.strokeWidth = 0 }
+
+                // Highlight the selected card
+                option.card.strokeWidth = 4
+                selectedMood = option.moodName
+
+                // Show and animate the central Lottie view once
+                binding.lottieMainSelected.visibility = View.VISIBLE
+                binding.lottieMainSelected.setAnimation(option.rawRes)
+                binding.lottieMainSelected.playAnimation()
             }
         }
     }
@@ -107,12 +118,12 @@ class MoodTrackerFragment : Fragment() {
         )
 
         newDoc.set(entry).addOnSuccessListener {
-            if (_binding != null) {
+            if (_binding != null && isAdded) {
                 Toast.makeText(context, "Mood saved successfully!", Toast.LENGTH_SHORT).show()
-                binding.etJournal.text?.clear()
+                _binding?.etJournal?.text?.clear()
             }
         }.addOnFailureListener {
-            if (_binding != null) {
+            if (_binding != null && isAdded) {
                 Toast.makeText(context, "Failed to save mood", Toast.LENGTH_SHORT).show()
             }
         }
@@ -120,6 +131,10 @@ class MoodTrackerFragment : Fragment() {
 
     private fun showHistoryBottomSheet() {
         val user = auth.currentUser ?: return
+
+        // Context safety check to prevent crashes if user quickly navigates back
+        if (_binding == null || !isAdded) return
+
         val bottomSheet = BottomSheetDialog(requireContext())
 
         // Scrollable UI Container for History (DARK MODE)
@@ -145,6 +160,9 @@ class MoodTrackerFragment : Fragment() {
             .whereEqualTo("type", "mood")
             .get()
             .addOnSuccessListener { snapshot ->
+                // Ensure fragment is still attached before creating views
+                if (_binding == null || !isAdded) return@addOnSuccessListener
+
                 if (snapshot.isEmpty) {
                     val emptyState = TextView(requireContext()).apply {
                         text = "No journal entries yet."
@@ -184,20 +202,25 @@ class MoodTrackerFragment : Fragment() {
                             gravity = android.view.Gravity.CENTER_VERTICAL
                         }
 
-                        val emojiStr = when(entry.mood) {
-                            "Excited" -> "🤩"
-                            "Happy" -> "😊"
-                            "Calm" -> "😌"
-                            "Tired" -> "😴"
-                            "Sad" -> "😔"
-                            "Angry" -> "😠"
-                            else -> "😶"
+                        // Updated to use actual Lottie animations (static frames) in the history
+                        val lottieRes = when(entry.mood) {
+                            "Happy" -> R.raw.smiley_emoji
+                            "Neutral" -> R.raw.diagonal_mouth_emoji
+                            "Sad" -> R.raw.yawn_emoji
+                            "Stressed" -> R.raw.angry_emoji
+                            else -> R.raw.smiley_emoji // Fallback
                         }
 
-                        val emojiText = TextView(requireContext()).apply {
-                            text = emojiStr
-                            textSize = 28f
-                            setPadding(0, 0, 24, 0)
+                        val emojiView = LottieAnimationView(requireContext()).apply {
+                            setAnimation(lottieRes)
+                            progress = 1.0f // Lock to the final frame to act as a still image
+
+                            val sizePx = (32 * resources.displayMetrics.density).toInt()
+                            val marginEndPx = (16 * resources.displayMetrics.density).toInt()
+
+                            layoutParams = LinearLayout.LayoutParams(sizePx, sizePx).apply {
+                                setMargins(0, 0, marginEndPx, 0)
+                            }
                         }
 
                         val headerTextContainer = LinearLayout(requireContext()).apply {
@@ -220,7 +243,7 @@ class MoodTrackerFragment : Fragment() {
                         headerTextContainer.addView(dateText)
                         headerTextContainer.addView(moodText)
 
-                        headerRow.addView(emojiText)
+                        headerRow.addView(emojiView)
                         headerRow.addView(headerTextContainer)
                         cardInner.addView(headerRow)
 
@@ -251,7 +274,7 @@ class MoodTrackerFragment : Fragment() {
                 bottomSheet.show()
             }
             .addOnFailureListener {
-                if (_binding != null) {
+                if (_binding != null && isAdded) {
                     Toast.makeText(context, "Failed to load history", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -259,9 +282,8 @@ class MoodTrackerFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // RESTORE THE BOTTOM NAVIGATION MENU WHEN LEAVING
-        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        bottomNav?.visibility = View.VISIBLE
+        // SAFELY RESTORE THE BOTTOM NAVIGATION MENU WHEN LEAVING
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigation)?.visibility = View.VISIBLE
         _binding = null
     }
 }

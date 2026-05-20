@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- Add this near your other <uses-permission> tags -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
 
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
@@ -28,6 +31,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DawaiBuddy">
 
+        <!-- Background listener for direct Wear OS messages -->
+        <service
+            android:name=".services.WatchAuthListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/request_login" />
+            </intent-filter>
+        </service>
+
         <service
             android:name=".services.PlaybackService"
             android:foregroundServiceType="mediaPlayback"
@@ -36,8 +49,6 @@
                 <action android:name="androidx.media3.session.MediaSessionService"/>
             </intent-filter>
         </service>
-
-        <!-- Removed ProductDetailActivity and ProductListActivity as they are now Fragments -->
 
         <activity
             android:name=".host_activities.HomeActivity"
@@ -61,6 +72,24 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- THE POPUP ACTIVITY WITH DEEP LINK ENABLED -->
+        <activity
+            android:name=".host_activities.WatchAuthDialogActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:exported="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:launchMode="singleTask">
+
+            <!-- CRITICAL: This allows the watch to force-open this popup from the background -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="dawaibuddy" android:host="watch_login" />
             </intent-filter>
         </activity>
 

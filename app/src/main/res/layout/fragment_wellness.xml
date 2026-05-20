@@ -19,27 +19,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tvGreeting"
+            <!-- Watch Status UI added to Top Left -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvWatchStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Good Morning,"
-                android:textColor="@color/subtext_fade"
-                android:textSize="14sp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:strokeColor="@android:color/transparent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/cvProfile"
+                app:layout_constraintBottom_toBottomOf="@id/cvProfile">
 
-            <TextView
-                android:id="@+id/tvGreetingName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Loading..."
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvGreeting" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp">
 
+                    <TextView
+                        android:id="@+id/tvWatchIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⌚"
+                        android:textSize="14sp"
+                        android:layout_marginEnd="6dp"/>
+
+                    <TextView
+                        android:id="@+id/tvWatchStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not Connected"
+                        android:textColor="#757575"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Streak Profile -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cvProfile"
                 android:layout_width="40dp"
@@ -47,7 +68,8 @@
                 app:cardBackgroundColor="#E8F5E9"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/tvGreetingName"
+                app:strokeWidth="0dp"
+                app:strokeColor="@android:color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
                 <TextView
@@ -58,6 +80,29 @@
                     android:textSize="18sp" />
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Moved Greeting Below the Watch Status -->
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Good Morning,"
+                android:textColor="@color/subtext_fade"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cvWatchStatus" />
+
+            <!-- Moved Name Below Greeting -->
+            <TextView
+                android:id="@+id/tvGreetingName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading..."
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvGreeting" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,8 +116,8 @@
             app:cardBackgroundColor="#E8F5E9"
             app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
-            app:strokeColor="#C8E6C9"
-            app:strokeWidth="1dp">
+            app:strokeWidth="0dp"
+            app:strokeColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -114,7 +159,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Steps Card -->
+        <!-- Modernized Steps Card (Wear OS Inspired) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvStepsCard"
             android:layout_width="match_parent"
@@ -125,7 +170,9 @@
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="24dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp"
+            app:strokeColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -134,6 +181,7 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
+                <!-- Progress Ring & Character Animation -->
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -143,128 +191,118 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:progress="0"
-                        app:indicatorColor="#4CAF50"
+                        app:indicatorColor="#6B4EE6"
                         app:indicatorSize="160dp"
-                        app:trackColor="#E8F5E9"
+                        app:trackColor="#F3F0FD"
                         app:trackCornerRadius="8dp"
-                        app:trackThickness="12dp" />
+                        app:trackThickness="10dp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <!-- Running Character mapped from Wear OS -->
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieRun"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
                         android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvStepsCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="of 10,000 steps"
-                            android:textColor="@color/subtext_fade"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                        app:lottie_rawRes="@raw/character_run"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false" />
                 </FrameLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/subtext_fade" />
+                <!-- Steps Typography -->
+                <TextView
+                    android:id="@+id/tvStepsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="44sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="steps"
+                    android:textColor="@color/subtext_fade"
+                    android:textSize="14sp" />
+
+                <!-- Calories and Distance Pills (Wear OS Inspired) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="24dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="2">
 
-                    <LinearLayout
+                    <!-- Calories Pill -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvCalories"
-                            android:layout_width="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="@color/red_pink"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        app:strokeColor="@android:color/transparent">
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="KCAL"
-                            android:textColor="@color/subtext_fade"
-                            android:textSize="10sp" />
-                    </LinearLayout>
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:paddingVertical="10dp">
+                            <TextView
+                                android:id="@+id/tvCalories"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="kcal"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="#F0F0F0" />
-
-                    <LinearLayout
+                    <!-- Distance Pill -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvDistance"
-                            android:layout_width="wrap_content"
+                        android:layout_marginStart="8dp"
+                        app:cardBackgroundColor="@color/purple"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp"
+                        app:strokeColor="@android:color/transparent">
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0.0"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="KM"
-                            android:textColor="@color/subtext_fade"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="#F0F0F0" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvActiveMins"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="MIN"
-                            android:textColor="@color/subtext_fade"
-                            android:textSize="10sp" />
-                    </LinearLayout>
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:paddingVertical="10dp">
+                            <TextView
+                                android:id="@+id/tvDistance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="km"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -296,14 +334,21 @@
                 android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
 
+                <!-- HEART RATE CARD -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvHeartRateCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="#FFEBEE"
                     app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp">
+                    app:cardElevation="1dp"
+                    app:strokeWidth="0dp"
+                    app:strokeColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -314,13 +359,18 @@
                             android:layout_height="32dp"
                             app:cardBackgroundColor="#FFF0F3"
                             app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            app:strokeColor="@android:color/transparent">
+
+                            <!-- Custom Icon Replaced Emoji -->
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center"
-                                android:text="❤️"
-                                android:textSize="14sp" />
+                                android:src="@drawable/heart_rate_wellness"
+                                app:tint="#c1121f"/>
+
                         </com.google.android.material.card.MaterialCardView>
                         <Space android:layout_width="wrap_content" android:layout_height="16dp" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Heart Rate" android:textColor="#757575" android:textSize="12sp" />
@@ -331,6 +381,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- WATER CARD -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvWaterCard"
                     android:layout_width="0dp"
@@ -342,7 +393,9 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="#E3F2FD"
                     app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp">
+                    app:cardElevation="1dp"
+                    app:strokeWidth="0dp"
+                    app:strokeColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -353,13 +406,18 @@
                             android:layout_height="32dp"
                             app:cardBackgroundColor="#E0F7FA"
                             app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            app:strokeColor="@android:color/transparent">
+
+                            <!-- Custom Icon Replaced Emoji -->
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center"
-                                android:text="💧"
-                                android:textSize="14sp" />
+                                android:src="@drawable/water_wellness"
+                                app:tint="@color/blue"/>
+
                         </com.google.android.material.card.MaterialCardView>
                         <Space android:layout_width="wrap_content" android:layout_height="16dp" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Water" android:textColor="#757575" android:textSize="12sp" />
@@ -377,6 +435,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <!-- SLEEP CARD -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -384,7 +443,9 @@
                     android:layout_weight="1"
                     app:cardBackgroundColor="#F3E5F5"
                     app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp">
+                    app:cardElevation="1dp"
+                    app:strokeWidth="0dp"
+                    app:strokeColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -395,13 +456,18 @@
                             android:layout_height="32dp"
                             app:cardBackgroundColor="#F3E5F5"
                             app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            app:strokeColor="@android:color/transparent">
+
+                            <!-- Custom Icon Replaced Emoji -->
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center"
-                                android:text="🛌"
-                                android:textSize="14sp" />
+                                android:src="@drawable/sleep_wellness"
+                                app:tint="#ae71c4"/>
+
                         </com.google.android.material.card.MaterialCardView>
                         <Space android:layout_width="wrap_content" android:layout_height="16dp" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sleep" android:textColor="#757575" android:textSize="12sp" />
@@ -409,6 +475,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- MOOD CARD -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvMoodCard"
                     android:layout_width="0dp"
@@ -420,7 +487,9 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardBackgroundColor="#E8F5E9"
                     app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp">
+                    app:cardElevation="1dp"
+                    app:strokeWidth="0dp"
+                    app:strokeColor="@android:color/transparent">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -429,15 +498,20 @@
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            app:cardBackgroundColor="#FFF8E1"
+                            app:cardBackgroundColor="#EDF7EE"
                             app:cardCornerRadius="16dp"
-                            app:cardElevation="0dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            app:strokeColor="@android:color/transparent">
+
+                            <!-- Custom Icon Replaced Emoji -->
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center"
-                                android:text="😌"
-                                android:textSize="14sp" />
+                                android:src="@drawable/mood_wellness"
+                                app:tint="#588157"/>
+
                         </com.google.android.material.card.MaterialCardView>
                         <Space android:layout_width="wrap_content" android:layout_height="16dp" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mood" android:textColor="#757575" android:textSize="12sp" />
@@ -467,7 +541,9 @@
             android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp"
+            app:strokeColor="@android:color/transparent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -532,7 +608,9 @@
                         app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
+                        android:foreground="?attr/selectableItemBackground"
+                        app:strokeWidth="0dp"
+                        app:strokeColor="@android:color/transparent">
                         <ImageView
                             android:id="@+id/ivMindfulnessPlay"
                             android:layout_width="match_parent"
@@ -561,6 +639,8 @@
                     android:layout_height="80dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
+                    app:strokeWidth="0dp"
+                    app:strokeColor="@android:color/transparent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 

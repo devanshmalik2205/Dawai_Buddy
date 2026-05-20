@@ -1,7 +1,7 @@
 package com.ebookfrenzy.dawaibuddy.objects
 
 data class User(
-    var uid: String = "", // Added to store the Firebase Auth UID
+    var uid: String = "",
     var phoneNumber: String = "",
     var name: String = "",
     var age: Int? = null,
@@ -10,5 +10,6 @@ data class User(
     var height: Float? = null, // In cm
     var medicalConditions: String = "",
     var medicinesTaken: String = "",
-    var isNewUser: Boolean = true // Note: We can also use Firestore document existence to check this now!
+    var isNewUser: Boolean = true,
+    var hasWatch: Boolean = false // ADDED: Tracks if the watch is linked
 )

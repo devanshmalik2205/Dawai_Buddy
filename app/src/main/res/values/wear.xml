@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- This MUST match the capability name the watch is looking for -->
+    <string-array name="android_wear_capabilities">
+        <item>com.ebookfrenzy.dawaibuddy</item>
+    </string-array>
+</resources>

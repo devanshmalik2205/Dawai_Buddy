@@ -10,6 +10,7 @@ data class WellnessData(
 
     // Water Logging specific
     var amountMl: Int = 0,
+    var cycle: Int = 1, // Added parameter to keep track of multiple goals per day
 
     // Mood Tracking specific
     var mood: String = "",

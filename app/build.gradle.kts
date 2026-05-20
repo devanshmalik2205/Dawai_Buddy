@@ -71,4 +71,7 @@ dependencies {
 
     implementation("androidx.media3:media3-session:1.2.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    implementation("com.airbnb.android:lottie:6.4.0") // Use 6.4.0 or latest version
+    implementation("com.google.android.gms:play-services-wearable:18.1.0")
 }

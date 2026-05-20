@@ -118,13 +118,15 @@
                         android:layout_height="60dp"
                         android:background="@drawable/bg_card_view"
                         android:src="@drawable/health"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        app:tint="@color/purple"
+                        app:backgroundTint="@color/purple_bg"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/health"
-                        android:textColor="@color/green_vdark_vlight"
+                        android:textColor="@color/purple"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -145,13 +147,15 @@
                         android:layout_height="60dp"
                         android:background="@drawable/bg_card_view"
                         android:src="@drawable/mood"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        app:tint="#f48c06"
+                        app:backgroundTint="#ffe5d9"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/mood"
-                        android:textColor="@color/green_vdark_vlight"
+                        android:textColor="#f48c06"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -172,13 +176,15 @@
                         android:layout_height="60dp"
                         android:background="@drawable/bg_card_view"
                         android:src="@drawable/meditation"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        app:tint="@color/red_pink"
+                        app:backgroundTint="@color/pink_bg"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/meditate"
-                        android:textColor="@color/green_vdark_vlight"
+                        android:textColor="@color/red_pink"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -199,13 +205,15 @@
                         android:layout_height="60dp"
                         android:background="@drawable/bg_card_view"
                         android:src="@drawable/water"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        app:tint="@color/blue"
+                        android:backgroundTint="@color/blue_bg"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/water"
-                        android:textColor="@color/green_vdark_vlight"
+                        android:textColor="@color/blue_text"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -490,7 +498,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_media_next"
+                android:src="@drawable/arrow_forward"
                 app:tint="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

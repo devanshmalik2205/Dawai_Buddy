@@ -1,5 +1,7 @@
 package com.ebookfrenzy.dawaibuddy.host_activities
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -49,10 +51,57 @@ class HomeActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         // This ONE line magically connects your bottom navigation view to your home_graph.xml.
-        // Clicking a tab (e.g., ID nav_wellness) will automatically route to the fragment
-        // with the matching ID in home_graph.xml. It also handles the back-stack and
-        // highlighting the correct tab icon perfectly!
         binding.bottomNavigation.setupWithNavController(navController)
+
+        // --- DYNAMIC BOTTOM NAV COLORS ---
+        // Change colors dynamically based on the current active fragment
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val activeColor = when (destination.id) {
+                R.id.nav_home -> Color.parseColor("#4CAF50") // Green for Home
+                R.id.nav_wellness -> Color.parseColor("#6B4EE6") // Purple for Wellness
+                R.id.nav_meditate -> Color.parseColor("#FF9800") // Orange for Meditate
+                R.id.nav_profile -> Color.parseColor("#2196F3") // Blue for Profile
+                else -> Color.parseColor("#4CAF50") // Default fallback
+            }
+
+            // The color used for all unselected tabs
+            val inactiveColor = Color.parseColor("#888888")
+
+            // Create a dynamic ColorStateList mapping checked state to the activeColor
+            val dynamicColorStateList = ColorStateList(
+                arrayOf(
+                    intArrayOf(android.R.attr.state_checked), // Selected state
+                    intArrayOf(-android.R.attr.state_checked) // Unselected state
+                ),
+                intArrayOf(
+                    activeColor,
+                    inactiveColor
+                )
+            )
+
+            // Apply it to both icons and text
+            binding.bottomNavigation.itemIconTintList = dynamicColorStateList
+            binding.bottomNavigation.itemTextColor = dynamicColorStateList
+
+            // --- NEW: Dynamic Active Indicator (Background Pill) Color ---
+            // Apply 20% opacity (approx 51 out of 255) to the active color for the background pill
+            val indicatorColor = Color.argb(
+                51,
+                Color.red(activeColor),
+                Color.green(activeColor),
+                Color.blue(activeColor)
+            )
+
+            val indicatorColorStateList = ColorStateList(
+                arrayOf(
+                    intArrayOf(android.R.attr.state_checked),
+                    intArrayOf(-android.R.attr.state_checked)
+                ),
+                intArrayOf(indicatorColor, Color.TRANSPARENT)
+            )
+
+            binding.bottomNavigation.itemActiveIndicatorColor = indicatorColorStateList
+        }
 
         // 3. Trigger the Google Health Connect authentication/permission prompt
         checkAndRequestHealthConnectPermissions()
